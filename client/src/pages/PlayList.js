@@ -1,5 +1,4 @@
 import React from 'react';
-import Player from '../components/Player';
 import TableList from '../components/TableList';
 import { usePlayList } from '../useHooks/usePlayList';
 
@@ -7,8 +6,10 @@ import { usePlayList } from '../useHooks/usePlayList';
 const PlayList = () => {
 
   const { podcasts } = usePlayList()
+ 
 
   console.log(podcasts)
+
 
   return (
     <>
@@ -16,7 +17,7 @@ const PlayList = () => {
       fontWeight:'bold'
       }}>Your PlayList</h2>
       {podcasts && <TableList podcasts={podcasts} />}
-      <Player/>
+     
     </>
   );
 };

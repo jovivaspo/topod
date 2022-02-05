@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -7,6 +7,7 @@ import ModalLogin from './ModalLogin';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@material-ui/core';
 import { logout } from '../actions/userActions';
+import { StateContext } from '../context/stateContext';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -33,6 +34,7 @@ const NavBar = () => {
   const classes = useStyles();
   const navigate = useNavigate()
   const user = useSelector(state => state.user)
+  const {setSong} = useContext(StateContext)
   const dispatch = useDispatch()
   //console.log(user)
 
@@ -40,6 +42,8 @@ const NavBar = () => {
     return (
       <Button className={classes.button} onClick={() => {
         dispatch(logout())
+        localStorage.removeItem('song')
+        setSong('')
         navigate('/')
       }}>Cerrar Sesión</Button>
     )

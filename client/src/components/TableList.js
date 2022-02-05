@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -12,6 +12,7 @@ import { timeAgo } from '../services/ago';
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import PauseCircleFilledIcon from '@material-ui/icons/PauseCircleFilled';
+import { StateContext } from '../context/stateContext';
 
 
 const useStyles = makeStyles({
@@ -27,6 +28,12 @@ const useStyles = makeStyles({
 });
 const TableList = ({podcasts}) => {
   const classes = useStyles();
+  const {setSong} = useContext(StateContext)
+
+  const hadlerSong = (id) =>{
+    setSong(id)
+    localStorage.setItem('song', JSON.stringify(id))
+  }
 
   return (
     <TableContainer  className={classes.container}>
@@ -50,7 +57,7 @@ const TableList = ({podcasts}) => {
               <TableCell style={{display:'flex', alignItems:'center', gap:16}}>{<img src={el.img} height='40' width='50'/>} <h5>{el.title}</h5></TableCell>
               <TableCell align="right">{secondsToString(el.duration)}</TableCell>
               <TableCell align="right">{timeAgo(el.date,'es')}</TableCell>
-              <TableCell align="right"><Button><PlayCircleFilledIcon/></Button></TableCell>
+              <TableCell align="right"><Button onClick={()=>hadlerSong(el.podcastId)}><PlayCircleFilledIcon/></Button></TableCell>
               <TableCell align="right"><Button><GetAppIcon/></Button></TableCell>
             </TableRow>
           ))}

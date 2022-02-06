@@ -4,14 +4,14 @@ import './index.css';
 import App from './App';
 import store from './store/index'
 import { Provider } from 'react-redux';
-import {StateProvider} from './context/stateContext'
+import {SearchProvider} from './context/SearchContext'
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store} >
-      <StateProvider>
+      <SearchProvider>
         <App />
-      </StateProvider>
+      </SearchProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

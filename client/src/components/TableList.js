@@ -6,37 +6,51 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Button } from '@material-ui/core';
+import { Button, duration } from '@material-ui/core';
 import secondsToString from '../services/secondToString';
 import { timeAgo } from '../services/ago';
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import PauseCircleFilledIcon from '@material-ui/icons/PauseCircleFilled';
-import { StateContext } from '../context/stateContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadSong, playSong } from '../actions/audioPlayerActions';
+
 
 
 const useStyles = makeStyles({
-  container:{
-    width:'90vw',
+  container: {
+    width: '90vw',
     margin: '0 auto',
-    marginTop:30,
+    marginTop: 30,
 
   },
   table: {
-    backgroundColor:'#302b63'
+    backgroundColor: '#302b63'
   },
 });
-const TableList = ({podcasts}) => {
+const TableList = ({ podcasts }) => {
   const classes = useStyles();
-  const {setSong} = useContext(StateContext)
+  const audioPlayer = useSelector(state => state.audioPlayer)
+  const dispatch = useDispatch()
+  console.log(audioPlayer)
 
-  const hadlerSong = (id) =>{
-    setSong(id)
-    localStorage.setItem('song', JSON.stringify(id))
+  const handlerSong = (id,title,duration) => {
+    console.log('Se pulsó');
+    if (id === audioPlayer?.currentSong?.id) {
+      if (audioPlayer.isPlaying === true) {
+        dispatch(playSong(false))
+      } else {
+        dispatch(playSong(true))
+      }
+    } else {
+      dispatch(loadSong(id,title,duration))
+      dispatch(playSong(true))
+    }
+
   }
 
   return (
-    <TableContainer  className={classes.container}>
+    <TableContainer className={classes.container}>
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
@@ -49,16 +63,22 @@ const TableList = ({podcasts}) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {podcasts.map((el,index) => (
-            <TableRow key={index}>
+          {podcasts.map((el, index) => (
+           
+            <TableRow key={index} style={{
+              backgroundColor:
+                audioPlayer?.currentSong?.id === el.podcastId ? "black" : "transparent",
+            }}>
               <TableCell component="th" scope="row">
                 {index}
               </TableCell>
-              <TableCell style={{display:'flex', alignItems:'center', gap:16}}>{<img src={el.img} height='40' width='50'/>} <h5>{el.title}</h5></TableCell>
+              <TableCell style={{ display: 'flex', alignItems: 'center', gap: 16 }}>{<img src={el.img} height='40' width='50' />} <h5>{el.title}</h5></TableCell>
               <TableCell align="right">{secondsToString(el.duration)}</TableCell>
-              <TableCell align="right">{timeAgo(el.date,'es')}</TableCell>
-              <TableCell align="right"><Button onClick={()=>hadlerSong(el.podcastId)}><PlayCircleFilledIcon/></Button></TableCell>
-              <TableCell align="right"><Button><GetAppIcon/></Button></TableCell>
+              <TableCell align="right">{timeAgo(el.date, 'es')}</TableCell>
+              <TableCell align="right"><Button onClick={() => handlerSong(el.podcastId, el.title, el.duration)}>{
+               (audioPlayer?.currentSong?.id === el.podcastId && audioPlayer?.isPlaying )  ? <PauseCircleFilledIcon /> : <PlayCircleFilledIcon />
+              }</Button></TableCell>
+              <TableCell align="right"><Button><GetAppIcon /></Button></TableCell>
             </TableRow>
           ))}
         </TableBody>

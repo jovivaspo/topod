@@ -1,3 +1,7 @@
 export const LOGIN = 'LOGIN'
 export const REGISTER = 'REGISTER'
 export const LOGOUT = 'LOGOUT'
+export const LOAD_SONGS = 'LOAD_SONGS'
+export const CURRENT_SONG = 'CURRENT_SONG'
+export const PLAYING = 'PLAYING'
+export const RESET = 'RESET'

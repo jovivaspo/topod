@@ -5,9 +5,14 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 
 
 const userStorage = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null
-
+const songStorage = localStorage.getItem('currentSong')? JSON.parse(localStorage.getItem('currentSong')) : null
 const initialStates = {
-    user:{userInfo:userStorage}
+    user:{userInfo:userStorage},
+    audioPlayer:{
+        playlist:[],
+        currentSong:songStorage,
+        isPlaying:false
+    }
 }
 
 const middleware = [thunk]

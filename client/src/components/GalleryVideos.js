@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 import React, { useContext } from 'react';
-import { StateContext } from '../context/stateContext';
+import { SearchContext } from '../context/SearchContext';
 import { Button } from '@material-ui/core';
 import { helpHttp } from '../services/helpHttp'
 import { useNavigate } from 'react-router-dom'
@@ -58,10 +58,10 @@ const useStyles = makeStyles((theme) => ({
 
 const GalleryVideos = () => {
     const classes = useStyles()
-    const { videos } = useContext(StateContext)
+    const { videos } = useContext(SearchContext)
     const navigate = useNavigate()
     const user = useSelector(state=>state.user)
-    console.log(user.userInfo)
+    //console.log(user.userInfo)
 
 
     const handleConvert = async (video) => {

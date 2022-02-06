@@ -1,21 +1,33 @@
 import { makeStyles } from '@material-ui/styles';
-import React, {useContext, useRef} from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { FaPlay, FaPause } from 'react-icons/fa'
 import { Slider } from '@material-ui/core';
-import { StateContext } from '../context/stateContext';
+import secondsToString from '../services/secondToString';
+import { useDispatch, useSelector } from 'react-redux';
+import { playSong } from '../actions/audioPlayerActions';
 
 const useStyles = makeStyles(() => ({
-    audioPanel: {
-
+    audioPanel:{
         position: 'absolute',
         bottom: 20,
-        width: '300px',
-        left: '50%',
-        marginLeft: -150,
+        width: '100%',
+      
 
         display: 'flex',
-        justifyContent:'center',
-        alignItems:'center'
+        flexDirection:'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    title:{
+        margin:10,
+        textAlign:'center'
+    },
+    
+    audio: {
+
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
 
 
     },
@@ -50,46 +62,67 @@ const useStyles = makeStyles(() => ({
 
 const Player = () => {
 
-    const { isPlaying,song, setIsPlaying } = useContext(StateContext)
-
     const classes = useStyles()
+    const audio = useRef()
+    const audioPlayer = useSelector(state => state.audioPlayer)
+    const dispatch = useDispatch()
 
-    const [value, setValue] = React.useState(30);
+    const [currentTime, setCurrentTime] = useState(0)
+    console.log(audioPlayer)
+    const duration = parseInt(audioPlayer?.currentSong?.duration)
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
 
-    const audioPlayer = useRef()
 
-    const handlerPlayer = () => {
-        console.log('pulse')
-        const prevValue = isPlaying
-        setIsPlaying(!prevValue)
-        if (!prevValue) {
-            audioPlayer.current.src =`${process.env.REACT_APP_URL_API}/api/podcasts/single/${song}`
-            audioPlayer.current.play()
-        } else {
-            audioPlayer.current.pause()
-        }
+    const handlerPlay = () => {
+
+        const prevState = audioPlayer.isPlaying
+
+       // audio.current.paused ? audio.current.play() : audio.current.pause()
+        prevState === false ? audio.current.play() : audio.current.pause()
+        
+        dispatch(playSong(!prevState))
+
     }
-    
-    console.log(audioPlayer);
+
+    const handleProgress = (value) => {
+        let compute = (value * duration)
+        setCurrentTime(compute)
+        audio.current.currentTime = compute
+    }
+   
+
     return (
-        <div className={classes.audioPanel} >
-            <audio ref={audioPlayer}  >
-                <source type="audio/mpeg" src={`${process.env.REACT_APP_URL_API}/api/podcasts/single/${song}`}/>
-            </audio>
-            <button className={classes.button} onClick={handlerPlayer}>{!isPlaying ? <FaPlay /> : <FaPause />}</button>
-            <div className={classes.time}>0</div>
-            <Slider className={classes.range} value={value} onChange={handleChange} aria-labelledby="continuous-slider" />
-            <div className={classes.time}>0</div>
+        audioPlayer.currentSong && <div  className={classes.audioPanel}>
+            <p className={classes.title}>{audioPlayer.currentSong.title}</p>
+            <div className={classes.audio} >
+                <audio ref={audio} type="audio/mpeg" 
+                onTimeUpdate={(e)=>setCurrentTime(e.target.currentTime)}
+                preload='true'
+                autoPlay
+                src={`${process.env.REACT_APP_URL_API}/api/podcasts/single/${audioPlayer.currentSong.id}`}
+                
+                
+                />
+                <button className={classes.button} onClick={handlerPlay}>{!audioPlayer.isPlaying ? <FaPlay /> : <FaPause />}</button>
+                <div className={classes.time}>{secondsToString(Math.floor(currentTime))}</div>
+                <progress value={duration ? (currentTime * 100) / duration : 0}
+                    max="100"
+                    onClick={(e) =>
+                        handleProgress(
+                            ((e.clientX - e.target.offsetLeft) / e.target.offsetWidth) * 100,
+                        )
+                    }
+                />
+                <div className={classes.time}>{secondsToString(Math.floor(duration))}</div>
+
+            </div>
 
         </div>
+
 
     );
 };
 
 export default Player;
 
-//src={`${process.env.REACT_APP_URL_API}/api/podcasts/single/${id}`}
+//src={`${process.env.REACT_APP_URL_API}/api/podcasts/single/${id}`}  <source  src={`${process.env.REACT_APP_URL_API}/api/podcasts/single/${audioPlayer.currentSong}`} />

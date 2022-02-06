@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import Search from '../components/Search';
 import { LinearProgress } from '@material-ui/core';
-import {StateContext} from '../context/stateContext'
+import {SearchContext} from '../context/SearchContext'
 import {AlertMessage} from '../components/AlertMessage'
 import GalleryVideos from '../components/GalleryVideos';
 
 
 const Home = () => {
-    const {loading, alert} = useContext(StateContext)
+    const {loading} = useContext(SearchContext)
   return (
       <>
       <Search/>

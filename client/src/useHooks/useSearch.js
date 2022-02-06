@@ -1,12 +1,12 @@
 import { useContext, useState } from "react"
-import { StateContext } from "../context/stateContext"
+import { SearchContext } from "../context/SearchContext"
 import { helpHttp } from "../services/helpHttp"
 
 
 export const useSearch = () => {
 
     const [search, setSearch] = useState('')
-    const {setLoading, setAlert, setVideos} = useContext(StateContext)
+    const {setLoading, setAlert, setVideos} = useContext(SearchContext)
    
 
     const handleChange = (e) => {

@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import MuiAlert from '@material-ui/lab/Alert';
-import { StateContext } from '../context/stateContext';
+import { SearchContext } from '../context/SearchContext';
 import { Snackbar } from '@material-ui/core'
 
 const AlertMessage = () => {
-    const { alert, initialAlert, setAlert } = useContext(StateContext)
+    const { alert, initialAlert, setAlert } = useContext(SearchContext)
    
     
     const handleClose = (e, reason) => {

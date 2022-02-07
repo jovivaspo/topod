@@ -14,10 +14,11 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import PauseCircleFilledIcon from '@material-ui/icons/PauseCircleFilled';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadSong, playSong } from '../actions/audioPlayerActions';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme)=>({
   container: {
     width: '90vw',
     margin: '0 auto',
@@ -25,9 +26,30 @@ const useStyles = makeStyles({
 
   },
   table: {
-    backgroundColor: '#302b63'
+    backgroundColor: '#302b63',
+    minWidth:650
   },
-});
+  cell: {
+    paddingLeft:8,
+    border:'none',
+    [theme.breakpoints.down('sm')]: {
+      fontSize:10,
+      padding:4,
+      paddingLeft:6
+     
+    },
+  },
+  cellHead: {
+    paddingLeft:8,
+    [theme.breakpoints.down('sm')]: {
+      fontSize:12,
+      padding:4,
+      paddingLeft:6
+     
+    },
+  }
+}));
+
 const TableList = ({ podcasts }) => {
   const classes = useStyles();
   const audioPlayer = useSelector(state => state.audioPlayer)
@@ -54,12 +76,13 @@ const TableList = ({ podcasts }) => {
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <TableCell>#</TableCell>
-            <TableCell>Título</TableCell>
-            <TableCell align="right">Duración</TableCell>
-            <TableCell align="right">Fecha incorporación</TableCell>
-            <TableCell align="right">Reproducir</TableCell>
-            <TableCell align="right">Descargar</TableCell>
+            <TableCell className={classes.cellHead}>#</TableCell>
+            <TableCell  className={classes.cellHead}>Título</TableCell>
+            <TableCell  className={classes.cellHead} align="right">Reproducir</TableCell>
+            <TableCell  className={classes.cellHead} align="right">Descargar</TableCell>
+            <TableCell  className={classes.cellHead} align="right">Eliminar</TableCell>
+            <TableCell   className={classes.cellHead} align="right">Duración</TableCell>
+            <TableCell   className={classes.cellHead} align="right">Fecha incorporación</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -68,17 +91,20 @@ const TableList = ({ podcasts }) => {
             <TableRow key={index} style={{
               backgroundColor:
                 audioPlayer?.currentSong?.id === el.podcastId ? "black" : "transparent",
+                borderBottom:'solid 1px white'
+              
             }}>
-              <TableCell component="th" scope="row">
+              <TableCell  className={classes.cell} component="th" scope="row">
                 {index}
               </TableCell>
-              <TableCell style={{ display: 'flex', alignItems: 'center', gap: 16 }}>{<img src={el.img} height='40' width='50' />} <h5>{el.title}</h5></TableCell>
-              <TableCell align="right">{secondsToString(el.duration)}</TableCell>
-              <TableCell align="right">{timeAgo(el.date, 'es')}</TableCell>
-              <TableCell align="right"><Button onClick={() => handlerSong(el.podcastId, el.title, el.duration)}>{
+              <TableCell  className={classes.cell} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>{<img src={el.img} height='40' width='50' />} <h5>{el.title}</h5></TableCell>
+              <TableCell  className={classes.cell} align="right"><Button onClick={() => handlerSong(el.podcastId, el.title, el.duration)}>{
                (audioPlayer?.currentSong?.id === el.podcastId && audioPlayer?.isPlaying )  ? <PauseCircleFilledIcon /> : <PlayCircleFilledIcon />
               }</Button></TableCell>
-              <TableCell align="right"><Button><GetAppIcon /></Button></TableCell>
+              <TableCell className={classes.cell} align="right"><Button><GetAppIcon /></Button></TableCell>
+              <TableCell className={classes.cell} align="right"><Button><DeleteForeverIcon /></Button></TableCell>
+              <TableCell className={classes.cell} align="right">{secondsToString(el.duration)}</TableCell>
+              <TableCell className={classes.cell} align="right">{timeAgo(el.date, 'es')}</TableCell>
             </TableRow>
           ))}
         </TableBody>

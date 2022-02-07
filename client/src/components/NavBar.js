@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ModalLogin from './ModalLogin';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@material-ui/core';
@@ -54,7 +54,7 @@ const NavBar = () => {
         <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
           <img src={process.env.PUBLIC_URL + 'logo.png'} alt='topod' height='100' onClick={() => navigate('/')} style={{ cursor: 'pointer' }} />
           <div>
-            {user.userInfo && <Button className={classes.button} href='/playlist'>Playlist</Button>}
+            {user.userInfo && <Link style={{textDecoration:'none'}} to='/playlist'><Button className={classes.button}>Playlist</Button></Link>}
             {!user.userInfo ? <ModalLogin /> : <LogOut />}
           </div>
         </Toolbar>

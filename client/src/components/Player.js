@@ -67,54 +67,25 @@ const Player = () => {
     const audioPlayer = useSelector(state => state.audioPlayer)
     const dispatch = useDispatch()
 
-    const [currentTime, setCurrentTime] = useState(0)
+ 
     console.log(audioPlayer)
-    const duration = parseInt(audioPlayer?.currentSong?.duration)
 
-
-
-    const handlerPlay = () => {
-
-        const prevState = audioPlayer.isPlaying
-
-       // audio.current.paused ? audio.current.play() : audio.current.pause()
-        prevState === false ? audio.current.play() : audio.current.pause()
-        
-        dispatch(playSong(!prevState))
-
-    }
-
-    const handleProgress = (value) => {
-        let compute = (value * duration)
-        setCurrentTime(compute)
-        audio.current.currentTime = compute
-    }
+    useEffect(()=>{
+        audioPlayer?.isPlaying===true? audio.current.play() : audio.current.pause()
+    },[audioPlayer])
+ 
    
-
     return (
         audioPlayer.currentSong && <div  className={classes.audioPanel}>
             <p className={classes.title}>{audioPlayer.currentSong.title}</p>
             <div className={classes.audio} >
-                <audio ref={audio} type="audio/mpeg" 
-                onTimeUpdate={(e)=>setCurrentTime(e.target.currentTime)}
+                <audio ref={audio} type="audio/mpeg" style={{width:280}}
                 preload='true'
+                onPlay={()=>dispatch(playSong(true))}
+                onPause={()=>dispatch(playSong(false))}
                 autoPlay
                 src={`${process.env.REACT_APP_URL_API}/api/podcasts/single/${audioPlayer.currentSong.id}`}
-                
-                
-                />
-                <button className={classes.button} onClick={handlerPlay}>{!audioPlayer.isPlaying ? <FaPlay /> : <FaPause />}</button>
-                <div className={classes.time}>{secondsToString(Math.floor(currentTime))}</div>
-                <progress value={duration ? (currentTime * 100) / duration : 0}
-                    max="100"
-                    onClick={(e) =>
-                        handleProgress(
-                            ((e.clientX - e.target.offsetLeft) / e.target.offsetWidth) * 100,
-                        )
-                    }
-                />
-                <div className={classes.time}>{secondsToString(Math.floor(duration))}</div>
-
+                controls/>
             </div>
 
         </div>

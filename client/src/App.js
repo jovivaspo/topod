@@ -11,6 +11,7 @@ import Player from './components/Player'
 
 function App() {
   const user = useSelector(state => state.user)
+  const audioPlayer = useSelector(state => state.audioPlayer)
 
  
   return (
@@ -24,7 +25,7 @@ function App() {
               <Route path='/login' element={<Login />} />
               <Route path='/playlist' element={<PlayList />} />
             </Routes>
-            <Player/>
+            {user.userInfo && audioPlayer.currentSong &&  <Player/>}
           </Router>
         </div>
      

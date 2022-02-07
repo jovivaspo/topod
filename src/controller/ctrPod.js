@@ -2,6 +2,8 @@
 const connection = require('../database')
 const mongoose = require('mongoose')
 const Users = require('../models/Users')
+const PodcastInfo = require('../models/PodcastInfo')
+const { findById } = require('../models/Users')
 
 const ctrPod = {}
 
@@ -14,7 +16,7 @@ ctrPod.getAll = async (req, res, next) => {
     try {
         const userId = req.params.userId
 
-    
+
         const user = await Users.findById(userId).populate('podcastsList')
 
         const list = user.podcastsList
@@ -56,7 +58,7 @@ ctrPod.getPodcasts = async (req, res, next) => {
         res.set('accept-ranges', 'bytes')
 
         let downloadStream = gridFsBucket.openDownloadStream(id)
-      
+
         downloadStream.on('data', chunk => {
             res.write(chunk)
         })
@@ -76,5 +78,51 @@ ctrPod.getPodcasts = async (req, res, next) => {
 
 }
 
+ctrPod.deletePodcast = async (req, res, next) => {
+
+    try {
+        console.log('borrando')
+
+        const idPodInfo = req.params.idPodInfo
+
+        const podcastInfo = await PodcastInfo.findById(idPodInfo)
+
+        console.log(podcastInfo)
+
+        const { podcastId } = podcastInfo  
+        const { userId } = podcastInfo
+
+        console.log(podcastId);
+        
+      
+        gridFsBucket.delete(podcastId, async (err,data)=>{
+
+            if(err){
+                const error = new Error('Error al eliminar')
+                console.log('todo mal');
+                next(error)
+            }
+            console.log('Elemento borrado de Gridfs')
+
+            await PodcastInfo.findByIdAndDelete(idPodInfo)
+
+            const user = await Users.findById(userId)
+
+            user.podcastsList = user.podcastsList.filter(el => {
+                return el.toString() !== idPodInfo
+            })
+
+            await user.save()
+
+            res.status(200).json({message:'Podcast eliminado'})
+        })
+
+    } catch (err) {
+        console.log(err)
+    next(err)
+}
+
+
+}
 
 module.exports = ctrPod

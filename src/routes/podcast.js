@@ -7,6 +7,9 @@ const router = Router()
 router.route('/single/:id')
 .get(ctrPod.getPodcasts)
 
+router.route('/delete/:idPodInfo')
+.delete(protect, ctrPod.deletePodcast)
+
 router.route('/all/:userId')
 .get(protect, ctrPod.getAll)
 

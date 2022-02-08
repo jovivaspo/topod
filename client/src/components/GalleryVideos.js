@@ -4,8 +4,9 @@ import { SearchContext } from '../context/SearchContext';
 import { Button } from '@material-ui/core';
 import { helpHttp } from '../services/helpHttp'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import secondsToString from '../services/secondToString'
+import { loadPlaylist } from '../actions/audioPlayerActions';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -58,40 +59,56 @@ const useStyles = makeStyles((theme) => ({
 
 const GalleryVideos = () => {
     const classes = useStyles()
-    const { videos } = useContext(SearchContext)
+    const { videos, setLoading, alert, setAlert } = useContext(SearchContext)
     const navigate = useNavigate()
-    const user = useSelector(state=>state.user)
+    const user = useSelector(state => state.user)
+    const dispatch = useDispatch()
     //console.log(user.userInfo)
 
 
     const handleConvert = async (video) => {
-        if(!user.userInfo){
+        if (!user.userInfo) {
             navigate('/login')
             return false
         }
         navigate('/playlist')
+        setLoading(true)
+        setAlert({
+            open: true,
+            type: 'info',
+            message: 'Convirtiendo vídeo...espere por favor'
+        })
         helpHttp().post(`${process.env.REACT_APP_URL_API}/api/videos`, {
             headers: {
                 "Content-Type": "application/json",
-                 "Authorization": `Bearer ${user.userInfo.token}`
+                "Authorization": `Bearer ${user.userInfo.token}`
             },
             body: {
-               
+
                 link: video.link,
                 title: video.title,
-                img:video.thumbnail,
+                img: video.thumbnail,
                 userId: user.userInfo.userId,
-                duration:video.duration
+                duration: video.duration
             }
         })
             .then(res => {
+                setLoading(false)
                 if (res.error) {
-                    alert(res.error)
+                    setAlert({
+                        open: true,
+                        type: 'error',
+                        message: res.error
+                    })
                     return false
+
                 }
-
-                alert(res.message)
-
+                setAlert({
+                    open: true,
+                    type: 'success',
+                    message: res.message
+                })
+                dispatch(loadPlaylist(user))
             })
 
 
@@ -99,7 +116,7 @@ const GalleryVideos = () => {
 
 
     console.log(videos)
-    return <div className={classes.gallery}>
+    return (<div className={classes.gallery}>
         {
             videos?.map((video, index) => {
                 return (
@@ -121,7 +138,9 @@ const GalleryVideos = () => {
             })
         }
 
-    </div>;
+
+
+    </div>);
 };
 
 export default GalleryVideos;

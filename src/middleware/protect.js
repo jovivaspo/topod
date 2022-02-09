@@ -14,6 +14,7 @@ const protect = (req, res, next) => {
 
 
     if (!token || !decodedToken.id) {
+        console.log('Token nok')
         const error = new Error('Token invalido')
         res.status(401)
         next(error)

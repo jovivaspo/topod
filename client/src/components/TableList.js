@@ -15,10 +15,13 @@ import PauseCircleFilledIcon from '@material-ui/icons/PauseCircleFilled';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadSong, playSong } from '../actions/audioPlayerActions';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import fileDownload from 'js-file-download'
+import { helpHttp } from '../services/helpHttp';
+import { SearchContext } from '../context/SearchContext'
 
 
 
-const useStyles = makeStyles((theme)=>({
+const useStyles = makeStyles((theme) => ({
   container: {
     width: '90vw',
     margin: '0 auto',
@@ -27,36 +30,38 @@ const useStyles = makeStyles((theme)=>({
   },
   table: {
     backgroundColor: '#302b63',
-    minWidth:650
+    minWidth: 650
   },
   cell: {
-    paddingLeft:8,
-    border:'none',
+    paddingLeft: 8,
+    border: 'none',
     [theme.breakpoints.down('sm')]: {
-      fontSize:10,
-      padding:4,
-      paddingLeft:6
-     
+      fontSize: 10,
+      padding: 4,
+      paddingLeft: 6
+
     },
   },
   cellHead: {
-    paddingLeft:8,
+    paddingLeft: 8,
     [theme.breakpoints.down('sm')]: {
-      fontSize:12,
-      padding:4,
-      paddingLeft:6
-     
+      fontSize: 12,
+      padding: 4,
+      paddingLeft: 6
+
     },
   }
 }));
 
 const TableList = ({ podcasts }) => {
   const classes = useStyles();
+  const { setAlert } = useContext(SearchContext)
   const audioPlayer = useSelector(state => state.audioPlayer)
+  const user = useSelector(state => state.user)
   const dispatch = useDispatch()
   console.log(audioPlayer)
 
-  const handlerSong = (id,title,duration) => {
+  const handlerSong = (id, title, duration) => {
     console.log('Se pulsó');
     if (id === audioPlayer?.currentSong?.id) {
       if (audioPlayer.isPlaying === true) {
@@ -65,11 +70,66 @@ const TableList = ({ podcasts }) => {
         dispatch(playSong(true))
       }
     } else {
-      dispatch(loadSong(id,title,duration))
+      dispatch(loadSong(id, title, duration))
       dispatch(playSong(true))
     }
 
   }
+
+  const handlerDownload = (id, title) => {
+
+    fetch(`${process.env.REACT_APP_URL_API}/api/podcasts/download/${id}`, {
+      headers:{
+        responseType: 'blob',
+        Authorization: `Bearer ${user.userInfo.token}`
+      }
+    })
+      .then(response =>{
+        console.log(response)
+        if(!response.ok){
+          let error = new Error('Ocurrió un error al descargar')
+          throw error
+        }
+        else return response.blob()
+      })
+      .then(data=>{
+        console.log(data)
+        if(!data || data.type==="application/json"){
+          let error = new Error('Ocurrió un error al descargar')
+          throw error
+        }else   fileDownload(data, `${title}.mp3`)
+      })
+      .catch(error=>{
+        setAlert({
+            open: true,
+            type: 'error',
+            message: error.message
+        })
+      })
+  }
+
+
+
+  const handlerDelete = (id) => {
+    helpHttp().del(`${process.env.REACT_APP_URL_API}/api/podcasts/delete/${id}`,{
+      headers:{
+        Authorization: `Bearer ${user.userInfo.token}`
+      }
+    })
+      .then(res =>{
+        if(res.error){
+          setAlert({
+            open:true,
+            type:'error',
+            message:res.error
+          })
+          return false
+        }
+        return false
+      })
+  }
+
+
 
   return (
     <TableContainer className={classes.container}>
@@ -77,32 +137,32 @@ const TableList = ({ podcasts }) => {
         <TableHead>
           <TableRow>
             <TableCell className={classes.cellHead}>#</TableCell>
-            <TableCell  className={classes.cellHead}>Título</TableCell>
-            <TableCell  className={classes.cellHead} align="right">Reproducir</TableCell>
-            <TableCell  className={classes.cellHead} align="right">Descargar</TableCell>
-            <TableCell  className={classes.cellHead} align="right">Eliminar</TableCell>
-            <TableCell   className={classes.cellHead} align="right">Duración</TableCell>
-            <TableCell   className={classes.cellHead} align="right">Fecha incorporación</TableCell>
+            <TableCell className={classes.cellHead}>Título</TableCell>
+            <TableCell className={classes.cellHead} align="right">Reproducir</TableCell>
+            <TableCell className={classes.cellHead} align="right">Descargar</TableCell>
+            <TableCell className={classes.cellHead} align="right">Eliminar</TableCell>
+            <TableCell className={classes.cellHead} align="right">Duración</TableCell>
+            <TableCell className={classes.cellHead} align="right">Fecha incorporación</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {podcasts.map((el, index) => (
-           
+
             <TableRow key={index} style={{
               backgroundColor:
                 audioPlayer?.currentSong?.id === el.podcastId ? "black" : "transparent",
-                borderBottom:'solid 1px white'
-              
+              borderBottom: 'solid 1px white'
+
             }}>
-              <TableCell  className={classes.cell} component="th" scope="row">
+              <TableCell className={classes.cell} component="th" scope="row">
                 {index}
               </TableCell>
-              <TableCell  className={classes.cell} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>{<img src={el.img} height='40' width='50' />} <h5>{el.title}</h5></TableCell>
-              <TableCell  className={classes.cell} align="right"><Button onClick={() => handlerSong(el.podcastId, el.title, el.duration)}>{
-               (audioPlayer?.currentSong?.id === el.podcastId && audioPlayer?.isPlaying )  ? <PauseCircleFilledIcon /> : <PlayCircleFilledIcon />
+              <TableCell className={classes.cell} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>{<img src={el.img} height='40' width='50' />} <h5>{el.title}</h5></TableCell>
+              <TableCell className={classes.cell} align="right"><Button onClick={() => handlerSong(el.podcastId, el.title, el.duration)}>{
+                (audioPlayer?.currentSong?.id === el.podcastId && audioPlayer?.isPlaying) ? <PauseCircleFilledIcon /> : <PlayCircleFilledIcon />
               }</Button></TableCell>
-              <TableCell className={classes.cell} align="right"><Button><GetAppIcon /></Button></TableCell>
-              <TableCell className={classes.cell} align="right"><Button><DeleteForeverIcon /></Button></TableCell>
+              <TableCell className={classes.cell} align="right"><Button onClick={() => handlerDownload(el.podcastId, el.title)}><GetAppIcon /></Button></TableCell>
+              <TableCell className={classes.cell} align="right"><Button onClick={() => handlerDelete(el.id)}><DeleteForeverIcon /></Button></TableCell>
               <TableCell className={classes.cell} align="right">{secondsToString(el.duration)}</TableCell>
               <TableCell className={classes.cell} align="right">{timeAgo(el.date, 'es')}</TableCell>
             </TableRow>

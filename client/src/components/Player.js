@@ -7,22 +7,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { playSong } from '../actions/audioPlayerActions';
 
 const useStyles = makeStyles(() => ({
-    audioPanel:{
+    audioPanel: {
         position: 'absolute',
         bottom: 20,
         width: '100%',
-      
+
 
         display: 'flex',
-        flexDirection:'column',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
     },
-    title:{
-        margin:10,
-        textAlign:'center'
+    title: {
+        margin: 10,
+        textAlign: 'center'
     },
-    
+
     audio: {
 
         display: 'flex',
@@ -65,27 +65,30 @@ const Player = () => {
     const classes = useStyles()
     const audio = useRef()
     const audioPlayer = useSelector(state => state.audioPlayer)
+
+
     const dispatch = useDispatch()
 
- 
-    console.log(audioPlayer)
 
-    useEffect(()=>{
-        audioPlayer?.isPlaying===true? audio.current.play() : audio.current.pause()
-    },[audioPlayer])
- 
-   
+
+    useEffect(() => {
+
+        audioPlayer?.isPlaying === true ? audio.current.play() : audio.current.pause()
+
+    }, [audioPlayer])
+
+
     return (
-        audioPlayer.currentSong && <div  className={classes.audioPanel}>
+        <div className={classes.audioPanel}>
             <p className={classes.title}>{audioPlayer.currentSong.title}</p>
             <div className={classes.audio} >
-                <audio ref={audio} type="audio/mpeg" style={{width:280}}
-                preload='true'
-                onPlay={()=>dispatch(playSong(true))}
-                onPause={()=>dispatch(playSong(false))}
-                autoPlay
-                src={`${process.env.REACT_APP_URL_API}/api/podcasts/single/${audioPlayer.currentSong.id}`}
-                controls/>
+                <audio ref={audio} type="audio/mpeg" style={{ width: 280 }}
+                    preload='true'
+                    onPlay={() => dispatch(playSong(true))}
+                    onPause={() => dispatch(playSong(false))}
+                    autoPlay
+                    src={`${process.env.REACT_APP_URL_API}/api/podcasts/single/${audioPlayer.currentSong.id}`}
+                    controls />
             </div>
 
         </div>

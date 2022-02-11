@@ -5,7 +5,6 @@ mongoose.connect(process.env.MONGOSE_URL_CLOUD,{
     useUnifiedTopology: true,
     
 })
-
 const connection = mongoose.connection
 
 connection.once('open',()=>{
@@ -13,3 +12,4 @@ connection.once('open',()=>{
 })
 
 module.exports = connection
+

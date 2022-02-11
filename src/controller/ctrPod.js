@@ -1,15 +1,16 @@
 
-const connection = require('../database')
 const mongoose = require('mongoose')
+const connection = require('../database')
 const Users = require('../models/Users')
 const PodcastInfo = require('../models/PodcastInfo')
 
 
 const ctrPod = {}
 
-const gridFsBucket = new mongoose.mongo.GridFSBucket(connection, {
+const gridFsBucket = new mongoose.mongo.GridFSBucket(mongoose.connection, {
     bucketName: 'podcasts',
 });
+
 
 ctrPod.getAll = async (req, res, next) => {
 
@@ -82,11 +83,31 @@ ctrPod.deletePodcast = async (req, res, next) => {
     try {
         console.log('Borrando')
         const id = req.params.idPodInfo
-        const info = await PodcastInfo.findById(id)
-        const {userId,podcastId} = info
-        console.log(podcastId)
-        gridFsBucket.delete( new mongoose.mongo.ObjectId(podcastId),(err)=>{
-            console.log(err)
+        const infoDeleted = await PodcastInfo.findByIdAndDelete(id)
+        const {userId,podcastId} = infoDeleted
+        const user = await Users.findById(userId)
+        user.podcastsList = user.podcastsList.filter(el=>el.toString() !== id)
+        await user.save()
+        const connect = mongoose.createConnection(process.env.MONGOSE_URL_CLOUD,{
+            useNewUrlParser:true
+        })
+        let gfs
+        connect.once('open', ()=>{
+            console.log('Nueva conexión creada')
+            gfs = new mongoose.mongo.GridFSBucket(connect.db,{
+                bucketName:'podcasts'
+            })
+            gfs.delete(podcastId,(err)=>{
+                if(err){
+                    res.status(500)
+                    const error = new Error (err)
+                    next(error)
+                    return false
+                }else{
+                    res.status(201).json({message:'Podcast borrado'})
+                }
+
+            })
         })
 
     } catch (err) {

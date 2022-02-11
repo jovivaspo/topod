@@ -13,7 +13,7 @@ import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import PauseCircleFilledIcon from '@material-ui/icons/PauseCircleFilled';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadSong, playSong } from '../actions/audioPlayerActions';
+import { loadPlaylist, loadSong, playSong } from '../actions/audioPlayerActions';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import fileDownload from 'js-file-download'
 import { helpHttp } from '../services/helpHttp';
@@ -110,13 +110,25 @@ const TableList = ({ podcasts }) => {
 
 
 
-  const handlerDelete = (id) => {
+  const handlerDelete = (id,podcastId) => {
+    const currentSong = JSON.parse(localStorage.getItem('currentSong'))
+    if(currentSong){
+      if(podcastId === currentSong.id){
+        dispatch(loadSong())
+      }
+    }
+    setAlert({
+      open:true,
+      type:'info',
+      message:'Borrando Podcast'
+    })
     helpHttp().del(`${process.env.REACT_APP_URL_API}/api/podcasts/delete/${id}`,{
       headers:{
         Authorization: `Bearer ${user.userInfo.token}`
       }
     })
       .then(res =>{
+        console.log(res)
         if(res.error){
           setAlert({
             open:true,
@@ -125,7 +137,12 @@ const TableList = ({ podcasts }) => {
           })
           return false
         }
-        return false
+        dispatch(loadPlaylist(user))
+        setAlert({
+          open:true,
+          type:'success',
+          message:res.message
+        })
       })
   }
 
@@ -162,7 +179,7 @@ const TableList = ({ podcasts }) => {
                 (audioPlayer?.currentSong?.id === el.podcastId && audioPlayer?.isPlaying) ? <PauseCircleFilledIcon /> : <PlayCircleFilledIcon />
               }</Button></TableCell>
               <TableCell className={classes.cell} align="right"><Button onClick={() => handlerDownload(el.podcastId, el.title)}><GetAppIcon /></Button></TableCell>
-              <TableCell className={classes.cell} align="right"><Button onClick={() => handlerDelete(el.id)}><DeleteForeverIcon /></Button></TableCell>
+              <TableCell className={classes.cell} align="right"><Button onClick={() => handlerDelete(el.id,el.podcastId)}><DeleteForeverIcon /></Button></TableCell>
               <TableCell className={classes.cell} align="right">{secondsToString(el.duration)}</TableCell>
               <TableCell className={classes.cell} align="right">{timeAgo(el.date, 'es')}</TableCell>
             </TableRow>

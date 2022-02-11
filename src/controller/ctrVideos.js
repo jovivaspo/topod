@@ -54,6 +54,9 @@ ctrVideos.convertVideo = async (req, res, next) => {
         const command = new ffmpeg({ source: video })
             .setFfmpegPath(ffmpegPath)
             .format('mp3')
+            .on('codecData', function(data) {
+                console.log('Input duration: ', data.duration);
+              })
             .on('stderr', function (stderrLine) {
                 console.log('Stderr output: ' + stderrLine);
             })

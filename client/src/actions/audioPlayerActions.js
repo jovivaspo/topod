@@ -24,8 +24,14 @@ export const loadPlaylist = (user) => async (dispatch) =>{
 
 
 export const loadSong = (id,title,duration) => async (dispatch) =>{
-    dispatch({type:CURRENT_SONG, payload:{id,title,duration}})
-    localStorage.setItem('currentSong', JSON.stringify({id,title,duration}))
+    if(!id){
+        dispatch({type:CURRENT_SONG, payload:null})
+        localStorage.removeItem('currentSong')
+    }else{
+        dispatch({type:CURRENT_SONG, payload:{id,title,duration}})
+        localStorage.setItem('currentSong', JSON.stringify({id,title,duration}))
+    }
+    
 }
 
 export const playSong = (isPlaying) => async (dispatch) =>{

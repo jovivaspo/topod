@@ -1,5 +1,4 @@
 const youtube = require('scrape-youtube')
-const fs = require('fs')
 const ytdl = require('ytdl-core')
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
@@ -50,6 +49,7 @@ ctrVideos.convertVideo = async (req, res, next) => {
         let uploadStream = gridFsBucket.openUploadStream(`${title}.mp3`)
         const idPodcast = uploadStream.id;
         const video = ytdl(link)
+       
         //video.pipe(fs.createWriteStream(`${title}.mp4`))
         const command = new ffmpeg({ source: video })
             .setFfmpegPath(ffmpegPath)
@@ -62,6 +62,9 @@ ctrVideos.convertVideo = async (req, res, next) => {
             })
             .on('error', function (err, stdout, stderr) {
                 console.log('Cannot process video: ' + err.message)
+                const error = new Error('Error transformando el archivo')
+                next(error)
+                return false
             })
             .on('end', function () {
                 console.log('Finished processing');
@@ -71,6 +74,7 @@ ctrVideos.convertVideo = async (req, res, next) => {
                 const error = new Error('Error subiendo el archivo a la BD')
                 res.status(500)
                 next(error)
+                return false
             })
             .on('finish', async () => {
                 console.log('Archivo subido con éxito id:', idPodcast)

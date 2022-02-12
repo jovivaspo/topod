@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 
     gallery: {
         width: '90vw',
-        margin: '0 auto'
+        margin: '0 auto',
     },
 
     item: {
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
 
 const GalleryVideos = () => {
     const classes = useStyles()
-    const { videos, setLoading, alert, setAlert } = useContext(SearchContext)
+    const { videos, setDuration, setAlert } = useContext(SearchContext)
     const navigate = useNavigate()
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
@@ -72,7 +72,7 @@ const GalleryVideos = () => {
             return false
         }
         navigate('/playlist')
-        setLoading(true)
+        setDuration(video.duration)
         setAlert({
             open: true,
             type: 'info',
@@ -93,7 +93,7 @@ const GalleryVideos = () => {
             }
         })
             .then(res => {
-                setLoading(false)
+                setDuration()
                 if (res.error) {
                     setAlert({
                         open: true,
@@ -103,6 +103,7 @@ const GalleryVideos = () => {
                     return false
 
                 }
+                setDuration()
                 setAlert({
                     open: true,
                     type: 'success',

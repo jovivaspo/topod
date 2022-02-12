@@ -9,12 +9,12 @@ import GalleryVideos from '../components/GalleryVideos';
 const Home = () => {
     const {loading} = useContext(SearchContext)
   return (
-      <>
+      <div className='home'>
       <Search/>
         { loading && <LinearProgress color="secondary" style={{width:'80vw', margin:'0 auto'}} />} 
         {<GalleryVideos/>}
         {<AlertMessage/>}
-      </>
+      </div>
   );
 };
 

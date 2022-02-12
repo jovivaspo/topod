@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 
 const TableList = ({ podcasts }) => {
   const classes = useStyles();
-  const { setAlert } = useContext(SearchContext)
+  const { setAlert, setLoading } = useContext(SearchContext)
   const audioPlayer = useSelector(state => state.audioPlayer)
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
@@ -117,11 +117,15 @@ const TableList = ({ podcasts }) => {
         dispatch(loadSong())
       }
     }
+   
     setAlert({
       open:true,
       type:'info',
       message:'Borrando Podcast'
     })
+
+    setLoading(true)
+
     helpHttp().del(`${process.env.REACT_APP_URL_API}/api/podcasts/delete/${id}`,{
       headers:{
         Authorization: `Bearer ${user.userInfo.token}`
@@ -137,6 +141,7 @@ const TableList = ({ podcasts }) => {
           })
           return false
         }
+        setLoading(false)
         dispatch(loadPlaylist(user))
         setAlert({
           open:true,
@@ -144,6 +149,7 @@ const TableList = ({ podcasts }) => {
           message:res.message
         })
       })
+     
   }
 
 
@@ -167,7 +173,7 @@ const TableList = ({ podcasts }) => {
 
             <TableRow key={index} style={{
               backgroundColor:
-                audioPlayer?.currentSong?.id === el.podcastId ? "black" : "transparent",
+                audioPlayer?.currentSong?.id === el.podcastId ?  "#181818" : "transparent",
               borderBottom: 'solid 1px white'
 
             }}>

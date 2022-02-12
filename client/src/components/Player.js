@@ -8,15 +8,17 @@ import { playSong } from '../actions/audioPlayerActions';
 
 const useStyles = makeStyles(() => ({
     audioPanel: {
-        position: 'absolute',
-        bottom: 20,
+        position: 'fixed',
+        bottom: 0,
         width: '100%',
-
 
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        background: '#181818',
+        paddingBottom:16
+
     },
     title: {
         margin: 10,

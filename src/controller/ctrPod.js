@@ -24,7 +24,7 @@ ctrPod.getAll = async (req, res, next) => {
 
         res.status(200).json(list)
 
-        gridFsBucket.find().toArray((err, files) => {
+       // gridFsBucket.find().toArray((err, files) => {
 
           /*  if (!files || files.length === 0) {
                 console.log('no hay archivos')
@@ -41,11 +41,13 @@ ctrPod.getAll = async (req, res, next) => {
             })
             console.log(beauty_files)*/
             //return res.json(beauty_files);
-        })
+        //})
     } catch (err) {
         next(err)
     }
 }
+
+
 
 ctrPod.getPodcasts = async (req, res, next) => {
 

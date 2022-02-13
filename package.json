@@ -21,6 +21,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.8",
     "scrape-youtube": "^2.1.14",
+    "stripe": "^8.202.0",
     "ytdl-core": "^4.10.1"
   },
   "devDependencies": {

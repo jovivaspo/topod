@@ -55,6 +55,7 @@ const NavBar = () => {
           <img src={process.env.PUBLIC_URL + 'logo.png'} alt='topod' height='100' onClick={() => navigate('/')} style={{ cursor: 'pointer' }} />
           <div>
             {user.userInfo && <Link style={{textDecoration:'none'}} to='/playlist'><Button className={classes.button}>Playlist</Button></Link>}
+            {user.userInfo && <Link style={{textDecoration:'none'}} to='/donaciones'><Button className={classes.button}>Donaciones</Button></Link>}
             {!user.userInfo ? <ModalLogin /> : <LogOut />}
           </div>
         </Toolbar>

@@ -4,6 +4,7 @@ const notFound = require('./middleware/notFound')
 const handleError = require('./middleware/handleError')
 
 
+
 const app = express()
 
 //Settings
@@ -19,6 +20,7 @@ app.use(express.json())
 app.use('/api/user', require('../src/routes/user'))
 app.use('/api/videos', require('../src/routes/videos'))
 app.use('/api/podcasts', require('../src/routes/podcast'))
+app.use('/donaciones', require('../src/routes/donaciones'))
 //Errors
 app.use(notFound)
 app.use(handleError)

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -47,6 +47,12 @@ const NavBar = () => {
       }}>Cerrar Sesión</Button>
     )
   }
+
+  useEffect(()=>{
+    const mediaQuery = window.matchMedia("(max-width: 600px)")
+    console.log(mediaQuery)
+    mediaQuery.matches? console.log('movil') : console.log('desktop')
+  },[])
 
   return (
     <div className={classes.root}>

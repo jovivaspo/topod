@@ -1,6 +1,7 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
+import { useSelector } from 'react-redux';
 import { CardElement, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
-import { Button, Container, makeStyles } from '@material-ui/core'
+import { Button, Container, makeStyles, CircularProgress } from '@material-ui/core'
 import { helpHttp } from '../services/helpHttp';
 import { SearchContext } from '../context/SearchContext';
 import { AlertMessage } from './AlertMessage';
@@ -61,18 +62,23 @@ const Checkout = () => {
     const elements = useElements()
     const classes = useStyles()
     const {setAlert} = useContext(SearchContext)
+    const user = useSelector(state=>state.user)
+    const [sending,setSending] = useState(false)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        
+        setSending(true)
         const { error, paymentMethod } = await stripe.createPaymentMethod({
             type: 'card',
-            card: elements.getElement(CardElement)
+            card: elements.getElement(CardElement),
+            billing_details:{
+                email: user.userInfo.email
+            }
         })
 
         if(!error){
-
-            const {id} = paymentMethod
+            console.log(paymentMethod)
+            const {id,billing_details} = paymentMethod
             helpHttp().post(`${process.env.REACT_APP_URL_API}/donaciones`,{
                 headers: {
                     "Content-Type": "application/json",
@@ -80,20 +86,24 @@ const Checkout = () => {
                 },
                 body: {
                    id,
-                   amount: 200
+                   amount: 200,
+                   billing_details
                 }
             })
             .then(res=>{
                 console.log(res)
-               setAlert({
+                setSending(false)
+                setAlert({
                    open:true,
                    type: res.error? "error" : "success",
-                   message: res.error? res.error : res.message
+                   message: res.error? res.error : (res.message + ' ' +  user.userInfo.email)
                })
                if (!res.error)  elements.getElement(CardElement).clear()
              
             })
         }
+
+       
 
     }
 
@@ -104,7 +114,7 @@ const Checkout = () => {
                 <img className={classes.img} src="cerveza.png" alt="Invitame a una cerveza" width='140' />
                 <h4 style={{textAlign:'center'}}>Invítame a una jarra 2€</h4>
                 <CardElement options={CARD_ELEMENT_OPTIONS}/>
-                <Button variant='contained' color='secondary'type='submit' className={classes.button} fullWidth>Donar</Button>
+                <Button variant='contained' color='secondary'type='submit' className={classes.button} fullWidth>{sending? <CircularProgress size={24} /> : 'Donar' }</Button>
             </form>
             <AlertMessage/>
         </Container>

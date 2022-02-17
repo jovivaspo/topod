@@ -17,7 +17,6 @@ ctrPod.getAll = async (req, res, next) => {
     try {
         const userId = req.params.userId
 
-
         const user = await Users.findById(userId).populate('podcastsList')
 
         const list = user.podcastsList
@@ -46,8 +45,6 @@ ctrPod.getAll = async (req, res, next) => {
         next(err)
     }
 }
-
-
 
 ctrPod.getPodcasts = async (req, res, next) => {
 
@@ -142,5 +139,7 @@ ctrPod.downloadPodcasts = async (req, res, next) => {
     }
 
 }
+
+
 
 module.exports = ctrPod

@@ -87,7 +87,7 @@ const TableList = ({ podcasts }) => {
       message: 'Iniciando descarga'
     })
   
-    fetch(`${process.env.REACT_APP_URL_API}/api/podcasts/download/${id}`, {
+    fetch(`/api/podcasts/download/${id}`, {
       headers: {
         responseType: 'blob',
         Authorization: `Bearer ${user.userInfo.token}`
@@ -144,7 +144,7 @@ const TableList = ({ podcasts }) => {
 
     setLoading(true)
 
-    helpHttp().del(`${process.env.REACT_APP_URL_API}/api/podcasts/delete/${id}`, {
+    helpHttp().del(`/api/podcasts/delete/${id}`, {
       headers: {
         Authorization: `Bearer ${user.userInfo.token}`
       }

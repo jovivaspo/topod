@@ -17,7 +17,7 @@ export const useSearch = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         setLoading(true)
-        helpHttp().get(`${process.env.REACT_APP_URL_API}/api/videos/${search}`) 
+        helpHttp().get(`/api/videos/${search}`) 
         .then(res =>{
             if(res.error){
                 setLoading(false)

@@ -5,7 +5,7 @@ import { helpHttp } from "../services/helpHttp"
 
 export const loadPlaylist = (user) => async (dispatch) =>{
 
-        helpHttp().get(`${process.env.REACT_APP_URL_API}/api/podcasts/all/${user.userInfo.userId}`,{
+        helpHttp().get(`/api/podcasts/all/${user.userInfo.userId}`,{
             headers:{
                 "Authorization": `Bearer ${user.userInfo.token}`
             }

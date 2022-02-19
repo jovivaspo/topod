@@ -85,7 +85,7 @@ const Checkout = () => {
         if (!error) {
             //console.log(paymentMethod)
             const { id, billing_details } = paymentMethod
-            helpHttp().post(`${process.env.REACT_APP_URL_API}/donaciones`, {
+            helpHttp().post(`/donaciones`, {
                 headers: {
                     "Content-Type": "application/json",
 

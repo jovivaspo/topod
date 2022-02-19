@@ -78,7 +78,7 @@ const GalleryVideos = () => {
             type: 'warning',
             message: 'Convirtiendo vídeo...espere por favor'
         })
-        helpHttp().post(`${process.env.REACT_APP_URL_API}/api/videos`, {
+        helpHttp().post(`/api/videos`, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${user.userInfo.token}`

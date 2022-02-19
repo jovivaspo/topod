@@ -103,7 +103,7 @@ const Player = () => {
                     onPlay={() => dispatch(playSong(true))}
                     onPause={() => dispatch(playSong(false))}
                     autoPlay
-                    src={`${process.env.REACT_APP_URL_API}/api/podcasts/single/${audioPlayer.currentSong.id}`}
+                    src={`/api/podcasts/single/${audioPlayer.currentSong.id}`}
                     controls />
             </div>
 

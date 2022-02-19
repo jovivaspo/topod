@@ -4,7 +4,7 @@ import { helpHttp } from "../services/helpHttp"
 
 export const login = (form, setAlert, setForm, initialForm) => async (dispatch) => {
     try {
-        const res = await helpHttp().post(`${process.env.REACT_APP_URL_API}/api/user/login`, {
+        const res = await helpHttp().post(`/api/user/login`, {
             headers: {
                 "Content-Type": "application/json"
             },
@@ -46,7 +46,7 @@ export const login = (form, setAlert, setForm, initialForm) => async (dispatch) 
 export const register = (form, setAlert, setForm, initialForm) => async (dispatch) => {
     try {
 
-        const res = await helpHttp().post(`${process.env.REACT_APP_URL_API}/api/user/register`, {
+        const res = await helpHttp().post(`/api/user/register`, {
             headers: {
                 "Content-Type": "application/json"
             },

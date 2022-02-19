@@ -1,4 +1,4 @@
-import { Button, Toolbar, AppBar, makeStyles, Drawer, List, ListItem } from "@material-ui/core"
+import { Button, Toolbar, AppBar, makeStyles, List, ListItem } from "@material-ui/core"
 import MenuIcon from '@material-ui/icons/Menu';
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
@@ -12,7 +12,7 @@ import LogOut from "./LogOut";
 
 const useStyles = makeStyles((theme) => ({
     appbar: {
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: '#000000',
         position: 'sticky',
         top: 0,
         zIndex: 99
@@ -98,17 +98,17 @@ const MenuMovil = () => {
                         </Link></ListItem>}
 
                     <ListItem className={classes.menuItem}>
-                        <Link className={classes.link} to='/' onClick={handlerOpen}>
+                        <Link className={classes.link} to='/buscar' onClick={handlerOpen}>
                             <SearchIcon /><span>Buscar Vídeo</span>
                         </Link></ListItem>
 
                     {user.userInfo && <ListItem className={classes.menuItem} onClick={handlerOpen}>
-                        <Link className={classes.link} to='/Playlist'>
+                        <Link className={classes.link} to='/playlist'>
                             <MusicNoteIcon /><span>Ver Playlist</span>
                         </Link></ListItem>}
 
                      <ListItem className={classes.menuItem} onClick={handlerOpen}>
-                        <Link className={classes.link} to='/Donaciones'>
+                        <Link className={classes.link} to='/donaciones'>
                             <PaymentIcon /><span>Donaciones</span>
                         </Link></ListItem>
 

@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
         margin: '0 auto',
         marginTop: '80px',
         gap: '50px',
+
         [theme.breakpoints.down('sm')]: {
             flexDirection: 'column',
             marginTop: '20px',
@@ -33,13 +34,24 @@ const useStyles = makeStyles((theme) => ({
             marginTop: 40,
         },
         [theme.breakpoints.down('xs')]: {
-            alignItems: 'start',
+           textAlign:'center',
             marginTop: 10,
         },
     },
 
     title: {
-        textAlign: 'center'
+        textAlign: 'center',
+        fontSize:32,
+        color:theme.palette.text.secondary
+    },
+    text:{
+        color:theme.palette.text.secondary
+    },
+    containerForm:{
+        display:'flex',
+        flexDirection:'column',
+        justifyContent:'center',
+        alignItems:'center'
     }
 }))
 
@@ -48,14 +60,14 @@ const Login = () => {
     const classes = useStyles()
     return (<div className={classes.container}>
         <div className={classes.textBox}>
-            <h2 className={classes.title}>ToPod</h2>
+            <h2 className={classes.title}>To Podcast</h2>
             <p className={classes.text}>Escucha a tus youtubers favoritos desde donde quieras</p>
             <p className={classes.text}>Crea tu playlist y descarga tus podcasts desde la app</p>
-            <p className={classes.text}>Convierte cualquier video a formtato mp3</p>
+            <p className={classes.text}>3 horas de reproducción totalmente gratis</p>
         </div>
         <Divider orientation="vertical" flexItem />
-        <div>
-            {value === 0 ? <h2>Inicia sesión</h2> : <h2>Crea una cuenta</h2>}
+        <div className={classes.containerForm}>
+            {value === 0 ? <h2 className={classes.title}>Inicia sesión</h2> : <h2 className={classes.title}>Crea una cuenta</h2>}
             <FormLogin value={value} setValue={setValue} />
         </div>
 

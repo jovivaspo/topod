@@ -1,5 +1,4 @@
-import { AppBar, Toolbar, Button } from "@material-ui/core"
-import ModalLogin from "./ModalLogin"
+import { AppBar, Toolbar } from "@material-ui/core"
 import LogOut from "./LogOut";
 import { Link, useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
@@ -10,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
     },
     appbar: {
-        backgroundColor: theme.palette.primary.main
+        backgroundColor: '#000000',
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -27,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 const MenuDesktop = () => {
 
-    const user = useSelector(state=>state.user)
+    const user = useSelector(state => state.user)
     const classes = useStyles();
     const navigate = useNavigate()
 
@@ -36,9 +35,10 @@ const MenuDesktop = () => {
             <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <img src={process.env.PUBLIC_URL + 'logo.png'} alt='topod' height='100' onClick={() => navigate('/')} style={{ cursor: 'pointer' }} />
                 <div>
-                    {user.userInfo && <Link style={{ textDecoration: 'none', marginRight:16, fontWeight:'bold' }} to='/playlist'>Playlist</Link>}
-                    {user.userInfo && <Link style={{ textDecoration: 'none',  marginRight:16, fontWeight:'bold' }} to='/donaciones'>Donaciones</Link>}
-                    {!user.userInfo ? <ModalLogin /> : <LogOut />}
+                    {user.userInfo && <Link style={{ textDecoration: 'none', marginRight: 16, fontWeight: 'bold' }} to='/buscar'>Buscar</Link>}
+                    {user.userInfo && <Link style={{ textDecoration: 'none', marginRight: 16, fontWeight: 'bold' }} to='/playlist'>Playlist</Link>}
+                    {user.userInfo && <Link style={{ textDecoration: 'none', marginRight: 16, fontWeight: 'bold' }} to='/donaciones'>Donaciones</Link>}
+                    {user.userInfo && <LogOut />}
                 </div>
             </Toolbar>
         </AppBar>

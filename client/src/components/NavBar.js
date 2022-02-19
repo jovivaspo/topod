@@ -10,7 +10,7 @@ const NavBar = () => {
 
   useEffect(()=>{
     const mediaQuery = window.matchMedia("(max-width: 600px)")
-    console.log(mediaQuery)
+    //console.log(mediaQuery)
     mediaQuery.matches? setDevice('movil') : setDevice('desktop')
   },[])
 

@@ -11,6 +11,7 @@ import Player from './components/Player'
 import Checkout from './components/Checkout';
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js';
+import Seacher from './pages/Seacher';
 
 const stripePromise = loadStripe("pk_test_51KSjXRKB2XXJmSdX0b2HtJSIAqpe0ZBRESIgtD6lXJsPPLwFsGxf0sYZq87nugeAJtabZOU9IQui9IqsFrPj5cJY00WXcP2Unq")
 
@@ -31,6 +32,7 @@ function App() {
           <NavBar />
           <Routes>
             <Route path='/' element={<Home />} />
+            <Route path='/buscar' element={<Seacher/>} />
             <Route path='/login' element={<Login />} />
             <Route path='/playlist' element={<PlayList />} />
             <Route path='/donaciones' element={

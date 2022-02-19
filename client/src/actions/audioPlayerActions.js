@@ -15,7 +15,7 @@ export const loadPlaylist = (user) => async (dispatch) =>{
                 alert(res.error)
                 return false
             }
-            console.log(res)
+           // console.log(res)
             dispatch({type:LOAD_SONGS,payload:res})
         })
     

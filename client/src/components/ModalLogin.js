@@ -6,11 +6,11 @@ import FormLogin from './FormLogin';
 
 
 const useStyles = makeStyles((theme) => ({
-    button:{
-        fontWeight: 'bold', 
-        marginTop:10,
-        fontSize:12
-      },
+    button: {
+        fontWeight: 'bold',
+        marginTop: 10,
+        fontSize: 12
+    },
     paper: {
         //position: 'absolute',
         width: 370,
@@ -19,6 +19,8 @@ const useStyles = makeStyles((theme) => ({
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
+       
+
     },
 }))
 
@@ -38,7 +40,7 @@ const ModalLogin = () => {
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
-      };
+    };
 
 
     return <>
@@ -48,10 +50,10 @@ const ModalLogin = () => {
             onClose={handleClose}
         ><Fade in={open}>
                 <div className={classes.paper}>
-                    <AppBar position="static">
-                        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example" variant='fullWidth'>
-                            <Tab label="Login" style={{ fontWeight: 600, fontSize:12 }} />
-                            <Tab label="Registrate" style={{ fontWeight: 600, fontSize:12 }} />
+                    <AppBar position="static" color='secondary'>
+                        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example" variant='fullWidth' textColor='secondary'>
+                            <Tab label="Login" style={{ fontWeight: 600, fontSize: 12 }} />
+                            <Tab label="Registrate" style={{ fontWeight: 600, fontSize: 12 }} />
                         </Tabs>
                         {<FormLogin value={value} setValue={setValue} handleClose={handleClose} />}
                     </AppBar>

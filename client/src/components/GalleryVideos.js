@@ -75,7 +75,7 @@ const GalleryVideos = () => {
         setDuration(video.duration)
         setAlert({
             open: true,
-            type: 'info',
+            type: 'warning',
             message: 'Convirtiendo vídeo...espere por favor'
         })
         helpHttp().post(`${process.env.REACT_APP_URL_API}/api/videos`, {
@@ -116,7 +116,7 @@ const GalleryVideos = () => {
     }
 
 
-    console.log(videos)
+    //console.log(videos)
     return (<div className={classes.gallery}>
         {
             videos?.map((video, index) => {

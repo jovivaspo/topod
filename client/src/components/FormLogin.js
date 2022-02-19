@@ -1,4 +1,4 @@
-import { Button, TextField, Snackbar, Divider } from '@material-ui/core';
+import { Button, TextField, Snackbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -7,12 +7,23 @@ import {useDispatch} from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   form: {
+    
     margin: 10,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
+    background:theme.palette.secondary.main,
+    background: 'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(224,201,152,1) 0%, rgba(205,167,87,1) 100%)',
+    borderRadius:20,
+    padding:16,
+
+    width:400,
+
+    [theme.breakpoints.down('xs')]:{
+      width:280,
+    }
 
   },
   input: {
@@ -103,19 +114,25 @@ const FormLogin = ({ value, setValue }) => {
 
   return <div>
     <form className={classes.form} onSubmit={handleSubmit}>
-      {value === 1 && (<TextField label="Name" className={classes.input} type='text' name='name' placeholder='Nombre' value={form.name} variant="outlined" onChange={handleChange} />)}
-      <TextField  className={classes.input} type='email' name='email' placeholder='Email' value={form.email} variant="outlined" onChange={handleChange} />
-      <TextField  className={classes.input} type='password' name='password' placeholder='Contraseña' variant="outlined" value={form.password} onChange={handleChange} />
-      {value === 1 && (<TextField label="Password" className={classes.input} type='password' name='confirmPassword' placeholder='Contraseña' variant="outlined" value={form.confirmPassword} onChange={handleChange} />)}
-      <Button size='small' className={classes.button} type='submit' variant="contained" color="secondary" onSubmit={handleSubmit}>{value === 0 ? 'Iniciar Sesión' : 'Registrate'}</Button>
+      {value === 1 && (<TextField  className={classes.input} type='text' name='name' placeholder='Nombre' value={form.name} variant="outlined" onChange={handleChange} autoComplete='off'/>)}
+
+      <TextField  className={classes.input} type='email' name='email' placeholder='Email' value={form.email} variant="outlined" onChange={handleChange} autoComplete='off' />
+
+      <TextField  className={classes.input} type='password' name='password' placeholder='Contraseña' variant="outlined" value={form.password} onChange={handleChange} autoComplete='off' />
+
+      {value === 1 && (<TextField className={classes.input} type='password' name='confirmPassword' placeholder='Contraseña' variant="outlined" value={form.confirmPassword} onChange={handleChange} autoComplete='off'/>)}
+
+      <Button size='small' className={classes.button} type='submit' variant="contained" color="primary" onSubmit={handleSubmit}>{value === 0 ? 'Iniciar Sesión' : 'Registrate'}</Button>
       {value===0? (
         <>
         <p style={{
           margin:'0 auto',
           padding:14,
-          fontSize:14
+          fontSize:14,
+          color:'black'
         }}>¿Eres nuevo?</p>
-        <Button size='small' className={classes.button}  variant='outlined' onClick={()=>setValue(1)} >Crea una cuenta</Button>
+        
+        <Button size='small' className={classes.button}   variant="contained" color="primary" onClick={()=>setValue(1)} >Crea una cuenta</Button>
         </>
         
       ) :
@@ -124,9 +141,10 @@ const FormLogin = ({ value, setValue }) => {
         <p style={{
           margin:'0 auto',
           padding:14,
-          fontSize:14
+          fontSize:14,
+          color:'black'
         }}>¿Ya tienes cuenta?</p>
-        <Button size='small' className={classes.button}  variant='outlined' onClick={()=>setValue(0)} >Inicia sesión</Button>
+        <Button size='small' className={classes.button}   variant="contained" color="primary"  onClick={()=>setValue(0)} >Inicia sesión</Button>
         </>)
     
     

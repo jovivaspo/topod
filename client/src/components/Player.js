@@ -1,12 +1,12 @@
 import { makeStyles } from '@material-ui/styles';
-import React, { useContext, useEffect, useState, useRef } from 'react';
-import { FaPlay, FaPause } from 'react-icons/fa'
-import { Slider } from '@material-ui/core';
-import secondsToString from '../services/secondToString';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { playSong } from '../actions/audioPlayerActions';
+import { loadSong, playSong } from '../actions/audioPlayerActions';
+import CloseIcon from '@material-ui/icons/Close';
+import { IconButton } from '@material-ui/core';
 
-const useStyles = makeStyles(() => ({
+
+const useStyles = makeStyles((theme) => ({
     audioPanel: {
         position: 'fixed',
         bottom: 0,
@@ -16,12 +16,15 @@ const useStyles = makeStyles(() => ({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        background: '#181818',
-        paddingBottom:16
+        background: theme.palette.secondary.main,
+        background: 'linear-gradient(90deg, rgba(215,197,159,0.9755252442773985) 0%, rgba(205,167,87,1) 43%)',
+        paddingBottom: 16
 
     },
     title: {
+        color:theme.palette.text.secondary,
         margin: 10,
+        fontWeight:'bold',
         textAlign: 'center'
     },
 
@@ -58,6 +61,12 @@ const useStyles = makeStyles(() => ({
     },
     range: {
         width: 200
+    },
+
+    close:{
+        position:'absolute',
+        bottom:0,
+        right:0,
     }
 
 }))
@@ -71,6 +80,10 @@ const Player = () => {
 
     const dispatch = useDispatch()
 
+    const handlerClose=()=>{
+        dispatch(playSong(false))
+        dispatch(loadSong())
+    }
 
 
     useEffect(() => {
@@ -83,6 +96,7 @@ const Player = () => {
     return (
         <div className={classes.audioPanel}>
             <p className={classes.title}>{audioPlayer.currentSong.title}</p>
+            <IconButton className={classes.close} variant='outlined'onClick={handlerClose}><CloseIcon/></IconButton>
             <div className={classes.audio} >
                 <audio ref={audio} type="audio/mpeg" style={{ width: 280 }}
                     preload='true'

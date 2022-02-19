@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 function LinearProgressWithLabel(props) {
-    console.log(props.value)
+   // console.log(props.value)
     return (
         <div style={{ display: 'flex', flexDirection: 'column', width: '80vw', margin: '0 auto', marginTop: 30 }}>
             <Typography variant="h6" style={{ width: '100%', textAlign: 'center' }}>Convirtiendo vídeo...</Typography>
@@ -46,8 +46,8 @@ export default function Progress({ duration }) {
     React.useEffect(() => {
 
         const completed = Math.round(duration / 11)
-        console.log(duration)
-        console.log(completed)
+        //console.log(duration)
+        //console.log(completed)
         const timer = setInterval(() => {
             setProgress((prevProgress) => (prevProgress >= 100 ? 100 : (prevProgress + (100 / completed))))
         }, 800);

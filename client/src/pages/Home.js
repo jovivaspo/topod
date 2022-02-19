@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, makeStyles, Typography } from '@material-ui/core'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
     backgroud: {
@@ -13,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundSize: 'cover',
         zIndex: 1,
 
-      
+
 
 
     },
@@ -37,8 +38,8 @@ const useStyles = makeStyles((theme) => ({
 
         display: 'flex',
         flexDirection: 'column',
-        justifyContent:'center',
-        textAlign:'center',
+        justifyContent: 'center',
+        textAlign: 'center',
 
 
     },
@@ -46,47 +47,48 @@ const useStyles = makeStyles((theme) => ({
 
     title: {
         fontFamily: 'Bebas Neue',
-        fontSize:120,
+        fontSize: 120,
 
         [theme.breakpoints.down('xs')]: {
-            fontSize:90
+            fontSize: 90
 
         }
-        
 
-      
+
+
     },
 
     subtitle: {
         fontFamily: 'Bebas Neue',
         [theme.breakpoints.down('xs')]: {
-            fontSize:20
+            fontSize: 20
 
         }
-       
+
     },
 
-    containerButtons:{
-        marginTop:22,
-        display:'flex',
-        justifyContent:'center',
-        gap:22,
+    containerButtons: {
+        marginTop: 22,
+        display: 'flex',
+        justifyContent: 'center',
+        gap: 22,
         [theme.breakpoints.down('xs')]: {
-            marginTop:32
+            marginTop: 32
 
         }
     },
 
-    link:{
-        textDecoration:'none',
-        fontSize:16,
-        fontFamily:'Bebas Neue'
+    link: {
+        textDecoration: 'none',
+        fontSize: 16,
+        fontFamily: 'Bebas Neue'
     }
 
 }))
 
 const Home = () => {
     const classes = useStyles()
+    const user = useSelector(state => state.user)
 
     return (
         <>
@@ -99,7 +101,11 @@ const Home = () => {
 
                 <div className={classes.containerButtons}>
                     <Button variant='outlined'><Link className={classes.link} to='/buscar'>Busca tu vídeo</Link></Button>
-                    <Button variant='outlined'><Link className={classes.link} to='/login'>Registrate</Link></Button>
+                    {!user.userInfo ?
+                        <Button variant='outlined'><Link className={classes.link} to='/login'>Registrate</Link></Button> :
+                        <Button variant='outlined' disabled><Link className={classes.link} to='/login'>Registrate</Link></Button>
+                    }
+
                 </div>
             </div>
 

@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 
 const GalleryVideos = () => {
     const classes = useStyles()
-    const { videos, setDuration, setAlert } = useContext(SearchContext)
+    const { videos, setDuration, setAlert, setProgress } = useContext(SearchContext)
     const navigate = useNavigate()
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
@@ -102,6 +102,7 @@ const GalleryVideos = () => {
                         message: res.error
                     })
                     setDuration()
+                    setProgress(0)
                     return false
 
                 }
@@ -111,6 +112,7 @@ const GalleryVideos = () => {
                     type: 'success',
                     message: res.message
                 })
+                setProgress(0)
                 dispatch(loadPlaylist(user))
             })
 

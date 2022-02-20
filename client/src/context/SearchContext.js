@@ -13,9 +13,10 @@ const SearchProvider = ({ children }) => {
     const [loading, setLoading] = useState(false)
     const [videos, setVideos] = useState([])
     const [duration,setDuration] = useState()
+    const [progress,setProgress]= useState(0)
 
 
-    const data = { alert, setAlert, initialAlert, loading, setLoading, videos, setVideos, duration, setDuration }
+    const data = { alert, setAlert, initialAlert, loading, setLoading, videos, setVideos, duration, setDuration, progress, setProgress }
 
     return (
         <SearchContext.Provider value={data}>{children}</SearchContext.Provider>

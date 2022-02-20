@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import { SearchContext } from '../context/SearchContext';
 
 function LinearProgressWithLabel(props) {
    // console.log(props.value)
@@ -41,15 +42,16 @@ const useStyles = makeStyles({
 
 export default function Progress({ duration }) {
     const classes = useStyles();
-    const [progress, setProgress] = React.useState(0);
+    const {progress, setProgress} = useContext(SearchContext)
 
     React.useEffect(() => {
 
         const completed = Math.round(duration / 11)
         //console.log(duration)
         //console.log(completed)
+        
         const timer = setInterval(() => {
-            setProgress((prevProgress) => (prevProgress >= 100 ? 100 : (prevProgress + (100 / completed))))
+            setProgress((prevProgress)=>(prevProgress >= 100 ? 100 : (prevProgress + (100 / completed))))
         }, 800);
         return () => {
             clearInterval(timer);

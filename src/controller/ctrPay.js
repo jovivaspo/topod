@@ -20,6 +20,7 @@ ctrPay.donaciones = async (req, res, next) => {
         //console.log(payment)
         res.status(200).json({ message: 'Muchas gracias por su donación' })
     } catch (err) {
+        console.log(err)
         next(err)
     }
 

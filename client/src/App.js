@@ -13,7 +13,7 @@ import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js';
 import Seacher from './pages/Seacher';
 
-const stripePromise = loadStripe("pk_test_51KSjXRKB2XXJmSdX0b2HtJSIAqpe0ZBRESIgtD6lXJsPPLwFsGxf0sYZq87nugeAJtabZOU9IQui9IqsFrPj5cJY00WXcP2Unq")
+const stripePromise = loadStripe("pk_live_51KSjXRKB2XXJmSdXfIfj4CqsaC1uydEgtRS7u9NvV02Pe1kVxlDd3YJgI86b8TgNe30GpjVDD8eyq2Li5NwOqmBi00rwyZw1ML")
 
 
 function App() {

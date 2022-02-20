@@ -33,10 +33,10 @@ ctrVideos.searchVideos = async (req, res, next) => {
 ctrVideos.convertVideo = async (req, res, next) => {
     try {
         console.log('Convirtiendo video');
-        const { link, title, userId, img, duration } = req.body
-        console.log(link, title, userId, img, duration)
+        const { link, title, userId, img, duration, date } = req.body
+        console.log(link, title, userId, img, duration, date)
         if (!link || !title || !userId) {
-            const error = new Error('Error al realizar la petición')
+            error = new Error('Error al realizar la petición')
             res.status(400)
             next(error)
             return false
@@ -49,7 +49,7 @@ ctrVideos.convertVideo = async (req, res, next) => {
         let uploadStream = gridFsBucket.openUploadStream(`${title}.mp3`)
         const idPodcast = uploadStream.id;
         const video = ytdl(link)
-       
+        let error
         //video.pipe(fs.createWriteStream(`${title}.mp4`))
         const command = new ffmpeg({ source: video })
             .setFfmpegPath(ffmpegPath)
@@ -62,7 +62,7 @@ ctrVideos.convertVideo = async (req, res, next) => {
             })
             .on('error', function (err, stdout, stderr) {
                 console.log('Cannot process video: ' + err.message)
-                const error = new Error('Error transformando el archivo')
+                error = new Error('Error transformando el archivo')
                 next(error)
                 return false
             })
@@ -71,40 +71,43 @@ ctrVideos.convertVideo = async (req, res, next) => {
             })
             .pipe(uploadStream, { end: true }) //  fs.createWriteStream(`${title}.mp3`)
             .on('error', () => {
-                const error = new Error('Error subiendo el archivo a la BD')
+                error = new Error('Error subiendo el archivo a la BD')
                 res.status(500)
                 next(error)
                 return false
             })
             .on('finish', async () => {
-                console.log('Archivo subido con éxito id:', idPodcast)
-                const podcastInfo = new PodcastInfo({
-                    title,
-                    userId,
-                    podcastId: idPodcast,
-                    img,
-                    duration
-                })
-                const podcastInfoSaved = await podcastInfo.save()
+                if(!error){
+                    console.log('Archivo subido con éxito id:', idPodcast)
+                    const podcastInfo = new PodcastInfo({
+                        title,
+                        userId,
+                        podcastId: idPodcast,
+                        img,
+                        duration,
+                        date
+                    })
+                    const podcastInfoSaved = await podcastInfo.save()
+    
+                    console.log('Info guardada', podcastInfoSaved)
+    
+                    const user = await Users.findById(userId)
+    
+                    console.log('Usurario:', user)
+    
+                    user.podcastsList = user.podcastsList.concat(podcastInfoSaved.id)
+    
+                    const userSaved = await user.save()
+    
+                    console.log('Podcast guardado en usuario', userSaved)
+    
+                    return res.status(201).json({ message: 'Archivo subido con éxito' })
+    
+                }
 
-                console.log('Info guardada', podcastInfoSaved)
-
-                const user = await Users.findById(userId)
-
-                console.log('Usurario:', user)
-
-                user.podcastsList = user.podcastsList.concat(podcastInfoSaved.id)
-
-                const userSaved = await user.save()
-
-                console.log('Podcast guardado en usuario', userSaved)
-
-                return res.status(201).json({ message: 'Archivo subido con éxito' })
-
+                return false
+               
             })
-
-
-
 
 
     } catch (err) {

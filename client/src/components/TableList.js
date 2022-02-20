@@ -18,6 +18,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import fileDownload from 'js-file-download'
 import { helpHttp } from '../services/helpHttp';
 import { SearchContext } from '../context/SearchContext'
+import { urls } from '../services/urlApi';
 
 
 
@@ -87,7 +88,7 @@ const TableList = ({ podcasts }) => {
       message: 'Iniciando descarga'
     })
   
-    fetch(`/api/podcasts/download/${id}`, {
+    fetch(`${urls().DOWNLOAD}${id}`, {
       headers: {
         responseType: 'blob',
         Authorization: `Bearer ${user.userInfo.token}`
@@ -144,7 +145,7 @@ const TableList = ({ podcasts }) => {
 
     setLoading(true)
 
-    helpHttp().del(`/api/podcasts/delete/${id}`, {
+    helpHttp().del(`${urls().DELETE}${id}`, {
       headers: {
         Authorization: `Bearer ${user.userInfo.token}`
       }
@@ -188,7 +189,7 @@ const TableList = ({ podcasts }) => {
         </TableHead>
         <TableBody>
           {podcasts.map((el, index) => (
-
+            
             <TableRow key={index} style={{
               backgroundColor:
                 audioPlayer?.currentSong?.id === el.podcastId ? "rgba(205,167,87)" : "transparent",

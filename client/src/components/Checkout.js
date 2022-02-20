@@ -5,6 +5,7 @@ import { Button, Container, makeStyles, CircularProgress } from '@material-ui/co
 import { helpHttp } from '../services/helpHttp';
 import { SearchContext } from '../context/SearchContext';
 import { AlertMessage } from './AlertMessage';
+import { urls } from '../services/urlApi';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -85,7 +86,7 @@ const Checkout = () => {
         if (!error) {
             //console.log(paymentMethod)
             const { id, billing_details } = paymentMethod
-            helpHttp().post(`/donaciones`, {
+            helpHttp().post(`${urls().DONACIONES}`, {
                 headers: {
                     "Content-Type": "application/json",
 

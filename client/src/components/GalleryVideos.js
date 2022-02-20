@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import secondsToString from '../services/secondToString'
 import { loadPlaylist } from '../actions/audioPlayerActions';
+import { urls } from '../services/urlApi';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -78,7 +79,7 @@ const GalleryVideos = () => {
             type: 'warning',
             message: 'Convirtiendo vídeo...espere por favor'
         })
-        helpHttp().post(`/api/videos`, {
+        helpHttp().post(`${urls().CONVERT}`, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${user.userInfo.token}`
@@ -89,17 +90,18 @@ const GalleryVideos = () => {
                 title: video.title,
                 img: video.thumbnail,
                 userId: user.userInfo.userId,
-                duration: video.duration
+                duration: video.duration,
+                date:new Date
             }
         })
             .then(res => {
-                setDuration()
                 if (res.error) {
                     setAlert({
                         open: true,
                         type: 'error',
                         message: res.error
                     })
+                    setDuration()
                     return false
 
                 }

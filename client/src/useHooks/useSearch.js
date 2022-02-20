@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import { SearchContext } from "../context/SearchContext"
 import { helpHttp } from "../services/helpHttp"
-
+import { urls } from "../services/urlApi"
 
 export const useSearch = () => {
 
@@ -17,7 +17,7 @@ export const useSearch = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         setLoading(true)
-        helpHttp().get(`/api/videos/${search}`) 
+        helpHttp().get(`${urls().SEARCH_VIDEOS}${search}`) 
         .then(res =>{
             if(res.error){
                 setLoading(false)

@@ -1,11 +1,11 @@
 import { CURRENT_SONG, LOAD_SONGS, PLAYING, RESET } from "../types"
 import { helpHttp } from "../services/helpHttp"
-
+import {urls} from "../services/urlApi"
 
 
 export const loadPlaylist = (user) => async (dispatch) =>{
 
-        helpHttp().get(`/api/podcasts/all/${user.userInfo.userId}`,{
+        helpHttp().get(`${urls().PODCASTS_ALL}${user.userInfo.userId}`,{
             headers:{
                 "Authorization": `Bearer ${user.userInfo.token}`
             }

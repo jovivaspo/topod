@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loadSong, playSong } from '../actions/audioPlayerActions';
 import CloseIcon from '@material-ui/icons/Close';
 import { IconButton } from '@material-ui/core';
+import { urls } from '../services/urlApi';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -103,7 +104,7 @@ const Player = () => {
                     onPlay={() => dispatch(playSong(true))}
                     onPause={() => dispatch(playSong(false))}
                     autoPlay
-                    src={`/api/podcasts/single/${audioPlayer.currentSong.id}`}
+                    src={`${urls().PLAYER}${audioPlayer.currentSong.id}`}
                     controls />
             </div>
 

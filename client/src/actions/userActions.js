@@ -1,10 +1,10 @@
 import { LOGIN, LOGOUT, REGISTER } from "../types"
 import { helpHttp } from "../services/helpHttp"
-
+import { urls } from "../services/urlApi"
 
 export const login = (form, setAlert, setForm, initialForm) => async (dispatch) => {
     try {
-        const res = await helpHttp().post(`/api/user/login`, {
+        const res = await helpHttp().post(`${urls().LOGIN}`, {
             headers: {
                 "Content-Type": "application/json"
             },
@@ -46,7 +46,7 @@ export const login = (form, setAlert, setForm, initialForm) => async (dispatch) 
 export const register = (form, setAlert, setForm, initialForm) => async (dispatch) => {
     try {
 
-        const res = await helpHttp().post(`/api/user/register`, {
+        const res = await helpHttp().post(`${urls().REGISTER}`, {
             headers: {
                 "Content-Type": "application/json"
             },

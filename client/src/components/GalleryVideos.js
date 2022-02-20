@@ -68,72 +68,73 @@ const GalleryVideos = () => {
 
 
     const handleConvert = async (video) => {
-        if (!user.userInfo) {
-            navigate('/login')
-            return false
-        }
-        if (convert) {
+        try {
+            if (!user.userInfo) {
+                navigate('/login')
+                return false
+            }
+            if (convert) {
+                setAlert({
+                    open: true,
+                    type: 'warning',
+                    message: 'Espere a que termine el proceso anterior'
+                })
+
+                return false
+            }
+            navigate('/playlist')
+            setDuration(video.duration)
             setAlert({
                 open: true,
                 type: 'warning',
-                message: 'Espere a que termine el proceso anterior'
+                message: 'Convirtiendo vídeo...espere por favor'
             })
+            setConvert(true)
+            const res = await helpHttp().post(`${urls().CONVERT}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${user.userInfo.token}`
+                },
+                body: {
 
-            return false
-        }
-        navigate('/playlist')
-        setDuration(video.duration)
-        setAlert({
-            open: true,
-            type: 'warning',
-            message: 'Convirtiendo vídeo...espere por favor'
-        })
-        setConvert(true)
-        helpHttp().post(`${urls().CONVERT}`, {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${user.userInfo.token}`
-            },
-            body: {
-
-                link: video.link,
-                title: video.title,
-                img: video.thumbnail,
-                userId: user.userInfo.userId,
-                duration: video.duration,
-                date: new Date
-            }
-        })
-            .then(res => {
-                setDuration()
-                setProgress(0)
-                setConvert(false)
-                if (res.error) {
-                    setAlert({
-                        open: true,
-                        type: 'error',
-                        message: res.error
-                    })
-
-                    return false
-
+                    link: video.link,
+                    title: video.title,
+                    img: video.thumbnail,
+                    userId: user.userInfo.userId,
+                    duration: video.duration,
+                    date: new Date
                 }
-
-                setAlert({
-                    open: true,
-                    type: 'success',
-                    message: res.message
-                })
-                dispatch(loadPlaylist(user))
             })
-            .catch(err=>{
+
+            setDuration()
+            setProgress(0)
+            setConvert(false)
+
+            if (res.error) {
                 setAlert({
                     open: true,
                     type: 'error',
-                    message: 'Algo salió mal'
+                    message: res.error
                 })
-            })
 
+                return false
+
+            }
+
+            setAlert({
+                open: true,
+                type: 'success',
+                message: res.message
+            })
+            dispatch(loadPlaylist(user))
+
+        } catch (err) {
+            setAlert({
+                open: true,
+                type: 'error',
+                message: 'Algo salió mal'
+            })
+        }
 
     }
 

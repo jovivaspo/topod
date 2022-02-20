@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import { SearchContext } from '../context/SearchContext';
+import { GlobalContext } from '../context/GlobalContext';
 
 function LinearProgressWithLabel(props) {
    // console.log(props.value)
@@ -42,7 +42,7 @@ const useStyles = makeStyles({
 
 export default function Progress({ duration }) {
     const classes = useStyles();
-    const {progress, setProgress} = useContext(SearchContext)
+    const {progress, setProgress} = useContext(GlobalContext)
 
     React.useEffect(() => {
 

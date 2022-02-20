@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { Button, Container, makeStyles, CircularProgress } from '@material-ui/core'
 import { helpHttp } from '../services/helpHttp';
-import { SearchContext } from '../context/SearchContext';
+import { GlobalContext } from '../context/GlobalContext';
 import { AlertMessage } from './AlertMessage';
 import { urls } from '../services/urlApi';
 
@@ -68,7 +68,7 @@ const Checkout = () => {
     const stripe = useStripe()
     const elements = useElements()
     const classes = useStyles()
-    const { setAlert } = useContext(SearchContext)
+    const { setAlert } = useContext(GlobalContext)
     const user = useSelector(state => state.user)
     const [sending, setSending] = useState(false)
 

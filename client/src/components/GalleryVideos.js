@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 import React, { useContext } from 'react';
-import { SearchContext } from '../context/SearchContext';
+import { GlobalContext } from '../context/GlobalContext';
 import { Button } from '@material-ui/core';
 import { helpHttp } from '../services/helpHttp'
 import { useNavigate } from 'react-router-dom'
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 
 const GalleryVideos = () => {
     const classes = useStyles()
-    const { videos, setDuration, setAlert, setProgress } = useContext(SearchContext)
+    const { videos, setDuration, setAlert, setProgress, convert, setConvert } = useContext(GlobalContext)
     const navigate = useNavigate()
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
@@ -72,6 +72,15 @@ const GalleryVideos = () => {
             navigate('/login')
             return false
         }
+        if(convert){
+            setAlert({
+                open: true,
+                type: 'warning',
+                message: 'Espere a que termine el proceso anterior'
+            })
+
+            return false
+        }
         navigate('/playlist')
         setDuration(video.duration)
         setAlert({
@@ -79,6 +88,7 @@ const GalleryVideos = () => {
             type: 'warning',
             message: 'Convirtiendo vídeo...espere por favor'
         })
+        setConvert(true)
         helpHttp().post(`${urls().CONVERT}`, {
             headers: {
                 "Content-Type": "application/json",
@@ -95,24 +105,25 @@ const GalleryVideos = () => {
             }
         })
             .then(res => {
+                setDuration()
+                setProgress(0)
+                setConvert(false)
                 if (res.error) {
                     setAlert({
                         open: true,
                         type: 'error',
                         message: res.error
                     })
-                    setDuration()
-                    setProgress(0)
+                   
                     return false
 
                 }
-                setDuration()
+              
                 setAlert({
                     open: true,
                     type: 'success',
                     message: res.message
                 })
-                setProgress(0)
                 dispatch(loadPlaylist(user))
             })
 

@@ -17,7 +17,7 @@ import { loadPlaylist, loadSong, playSong } from '../actions/audioPlayerActions'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import fileDownload from 'js-file-download'
 import { helpHttp } from '../services/helpHttp';
-import { SearchContext } from '../context/SearchContext'
+import { GlobalContext } from '../context/GlobalContext'
 import { urls } from '../services/urlApi';
 
 
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
 
 const TableList = ({ podcasts }) => {
   const classes = useStyles();
-  const { setAlert, setLoading } = useContext(SearchContext)
+  const { setAlert, setLoading } = useContext(GlobalContext)
   const audioPlayer = useSelector(state => state.audioPlayer)
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()

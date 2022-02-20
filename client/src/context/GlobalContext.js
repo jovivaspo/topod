@@ -1,8 +1,8 @@
 import { createContext, useState } from 'react'
 
-const SearchContext = createContext()
+const GlobalContext = createContext()
 
-const SearchProvider = ({ children }) => {
+const GlobalProvider = ({ children }) => {
     const initialAlert = {
         open: false,
         type: '',
@@ -14,13 +14,14 @@ const SearchProvider = ({ children }) => {
     const [videos, setVideos] = useState([])
     const [duration,setDuration] = useState()
     const [progress,setProgress]= useState(0)
+    const [convert, setConvert] = useState(false)
 
 
-    const data = { alert, setAlert, initialAlert, loading, setLoading, videos, setVideos, duration, setDuration, progress, setProgress }
+    const data = { alert, setAlert, initialAlert, loading, setLoading, videos, setVideos, duration, setDuration, progress, setProgress, convert, setConvert }
 
     return (
-        <SearchContext.Provider value={data}>{children}</SearchContext.Provider>
+        <GlobalContext.Provider value={data}>{children}</GlobalContext.Provider>
     )
 }
 
-export { SearchContext, SearchProvider }
+export { GlobalContext, GlobalProvider }

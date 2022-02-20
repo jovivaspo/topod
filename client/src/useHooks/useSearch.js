@@ -1,12 +1,12 @@
 import { useContext, useState } from "react"
-import { SearchContext } from "../context/SearchContext"
+import { GlobalContext } from "../context/GlobalContext"
 import { helpHttp } from "../services/helpHttp"
 import { urls } from "../services/urlApi"
 
 export const useSearch = () => {
 
     const [search, setSearch] = useState('')
-    const {setLoading, setAlert, setVideos} = useContext(SearchContext)
+    const {setLoading, setAlert, setVideos} = useContext(GlobalContext)
    
 
     const handleChange = (e) => {

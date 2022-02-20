@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import Search from '../components/Search';
 import { LinearProgress, makeStyles } from '@material-ui/core';
-import { SearchContext } from '../context/SearchContext'
+import { GlobalContext } from '../context/GlobalContext'
 import { AlertMessage } from '../components/AlertMessage'
 import GalleryVideos from '../components/GalleryVideos';
 
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Seacher = () => {
   const classes = useStyles()
-  const { loading } = useContext(SearchContext)
+  const { loading } = useContext(GlobalContext)
   return (
     <div className='home'>
       <h2 className={classes.title}>Busca tu vídeo</h2>

@@ -72,7 +72,7 @@ const GalleryVideos = () => {
             navigate('/login')
             return false
         }
-        if(convert){
+        if (convert) {
             setAlert({
                 open: true,
                 type: 'warning',
@@ -101,7 +101,7 @@ const GalleryVideos = () => {
                 img: video.thumbnail,
                 userId: user.userInfo.userId,
                 duration: video.duration,
-                date:new Date
+                date: new Date
             }
         })
             .then(res => {
@@ -114,17 +114,24 @@ const GalleryVideos = () => {
                         type: 'error',
                         message: res.error
                     })
-                   
+
                     return false
 
                 }
-              
+
                 setAlert({
                     open: true,
                     type: 'success',
                     message: res.message
                 })
                 dispatch(loadPlaylist(user))
+            })
+            .catch(err=>{
+                setAlert({
+                    open: true,
+                    type: 'error',
+                    message: 'Algo salió mal'
+                })
             })
 
 

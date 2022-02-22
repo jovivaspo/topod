@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { Button, Container, makeStyles, CircularProgress } from '@material-ui/core'
@@ -6,6 +6,7 @@ import { helpHttp } from '../services/helpHttp';
 import { GlobalContext } from '../context/GlobalContext';
 import { AlertMessage } from './AlertMessage';
 import { urls } from '../services/urlApi';
+import {useNavigate} from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -71,6 +72,16 @@ const Checkout = () => {
     const { setAlert } = useContext(GlobalContext)
     const user = useSelector(state => state.user)
     const [sending, setSending] = useState(false)
+    const navigate = useNavigate()
+
+    
+  useEffect(() => {
+    if (!user.userInfo) {
+      navigate('/login')
+      return false
+    }
+    
+  }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault()

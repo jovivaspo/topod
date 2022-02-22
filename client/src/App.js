@@ -12,6 +12,7 @@ import Checkout from './components/Checkout';
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js';
 import Seacher from './pages/Seacher';
+import NotFound from './pages/NotFound';
 
 const stripePromise = loadStripe("pk_live_51KSjXRKB2XXJmSdXfIfj4CqsaC1uydEgtRS7u9NvV02Pe1kVxlDd3YJgI86b8TgNe30GpjVDD8eyq2Li5NwOqmBi00rwyZw1ML")
 
@@ -40,6 +41,7 @@ function App() {
                 <Checkout />
               </Elements>
             } />
+            <Route path='*' element={<NotFound />} />
           </Routes>
           {user.userInfo
             &&

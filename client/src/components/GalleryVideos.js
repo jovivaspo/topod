@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import secondsToString from '../services/secondToString'
 import { loadPlaylist } from '../actions/audioPlayerActions';
 import { urls } from '../services/urlApi';
+import io from "socket.io-client"
 
 const useStyles = makeStyles((theme) => ({
 
@@ -66,8 +67,7 @@ const GalleryVideos = () => {
     const dispatch = useDispatch()
     //console.log(user.userInfo)
 
-
-    const handleConvert = async (video) => {
+    const handlerConvert = async (video) => {
         try {
             if (!user.userInfo) {
                 navigate('/login')
@@ -82,51 +82,84 @@ const GalleryVideos = () => {
 
                 return false
             }
-            navigate('/playlist')
-            setDuration(video.duration)
-            setAlert({
-                open: true,
-                type: 'warning',
-                message: 'Convirtiendo vídeo...espere por favor'
-            })
+            //  navigate('/playlist')
+            /* setDuration(video.duration)
+             setAlert({
+                 open: true,
+                 type: 'warning',
+                 message: 'Convirtiendo vídeo...espere por favor'
+             })*/
             setConvert(true)
-            const res = await helpHttp().post(`${urls().CONVERT}`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${user.userInfo.token}`
-                },
-                body: {
 
-                    link: video.link,
-                    title: video.title,
-                    img: video.thumbnail,
-                    userId: user.userInfo.userId,
-                    duration: video.duration,
-                    date: new Date
-                }
+            const { token } = user.userInfo
+            video.date = new Date
+            const duration = parseInt(video.duration)
+          
+            const socket = io(process.env.REACT_APP_URL_API_LOCAL, {
+                auth: { token },
+                query: { duration }
             })
 
-            setDuration()
-            setProgress(0)
-            setConvert(false)
-
-            if (res.error) {
+            socket.on("connect_error", (err) => {
                 setAlert({
                     open: true,
                     type: 'error',
-                    message: res.error
+                    message: err.message
                 })
+            });
 
-                return false
-
-            }
-
-            setAlert({
-                open: true,
-                type: 'success',
-                message: res.message
+            socket.on("message_converting", message => {
+                setAlert({
+                    open: true,
+                    type: 'warning',
+                    message
+                })
             })
-            dispatch(loadPlaylist(user))
+
+            socket.emit("sending_infovideo", video)
+
+          
+
+            setConvert(false)
+
+           
+            /* const res = await helpHttp().post(`${urls().CONVERT}`, {
+                 headers: {
+                     "Content-Type": "application/json",
+                     "Authorization": `Bearer ${user.userInfo.token}`
+                 },
+                 body: {
+ 
+                     link: video.link,
+                     title: video.title,
+                     img: video.thumbnail,
+                     userId: user.userInfo.userId,
+                     duration: video.duration,
+                     date: new Date
+                 }
+             })*/
+
+            /*   setDuration()
+               setProgress(0)
+               setConvert(false)
+   
+               if (res.error) {
+                   setAlert({
+                       open: true,
+                       type: 'error',
+                       message: res.error
+                   })
+   
+                   return false
+   
+               }
+   
+               setAlert({
+                   open: true,
+                   type: 'success',
+                   message: res.message
+               })
+               dispatch(loadPlaylist(user))*/
 
         } catch (err) {
             setAlert({
@@ -153,7 +186,7 @@ const GalleryVideos = () => {
                             <p className={classes.tags}><span>{video.description}</span></p>
                             <p className={classes.tags} style={{ display: 'flex', justifyContent: 'space-between' }}><span>Duración: {secondsToString(video.duration)}</span></p>
                             <p className={classes.tags}> <span><Button className={classes.button} size="small" variant="contained" color="secondary"
-                                onClick={() => handleConvert(video)}
+                                onClick={() => handlerConvert(video)}
                             >Convertir</Button></span></p>
 
                         </div>

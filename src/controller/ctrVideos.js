@@ -54,9 +54,9 @@ ctrVideos.convertVideo = async (req, res, next) => {
         const command = new ffmpeg({ source: video })
             .setFfmpegPath(ffmpegPath)
             .format('mp3')
-            .on('codecData', function(data) {
+            .on('codecData', function (data) {
                 console.log('Input duration: ', data.duration);
-              })
+            })
             .on('stderr', function (stderrLine) {
                 console.log('Stderr output: ' + stderrLine);
             })
@@ -77,7 +77,7 @@ ctrVideos.convertVideo = async (req, res, next) => {
                 return false
             })
             .on('finish', async () => {
-                if(!error){
+                if (!error) {
                     console.log('Archivo subido con éxito id:', idPodcast)
                     const podcastInfo = new PodcastInfo({
                         title,
@@ -88,25 +88,25 @@ ctrVideos.convertVideo = async (req, res, next) => {
                         date
                     })
                     const podcastInfoSaved = await podcastInfo.save()
-    
+
                     console.log('Info guardada', podcastInfoSaved)
-    
+
                     const user = await Users.findById(userId)
-    
+
                     console.log('Usurario:', user)
-    
+
                     user.podcastsList = user.podcastsList.concat(podcastInfoSaved.id)
-    
+
                     const userSaved = await user.save()
-    
+
                     console.log('Podcast guardado en usuario', userSaved)
-    
+
                     return res.status(201).json({ message: 'Archivo subido con éxito' })
-    
+
                 }
 
                 return false
-               
+
             })
 
 

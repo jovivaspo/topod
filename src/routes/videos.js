@@ -8,8 +8,8 @@ const router = Router()
 router.route('/:search')
 .get(ctrVideos.searchVideos)
 
-router.route('/')
-.post(protect,limitSpace,ctrVideos.convertVideo)
+/*router.route('/')
+.post(protect,limitSpace,ctrVideos.convertVideo)*/
 
 
 module.exports = router

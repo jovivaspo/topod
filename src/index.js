@@ -3,10 +3,12 @@ require('./database')
 const { Server } = require('socket.io')
 const jwt = require('jsonwebtoken')
 const Users = require('./models/Users')
+const  convertVideo = require('./services/convertVideo')
 
 const http = require('http')
 
 const app = require('./app')
+
 
 const server = http.createServer(app)
 
@@ -71,13 +73,12 @@ io.use(async (socket, next) => {
 
         socket.on("sending_infovideo", (video) => {
             console.log(video)
-
-
+            convertVideo(video,socket)
         })
 
-
-
-
+        socket.on('disconnect', ()=>{
+            console.log('Usuario desconectado')
+        })
     })
 
 

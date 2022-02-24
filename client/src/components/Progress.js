@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -40,27 +40,18 @@ const useStyles = makeStyles({
     },
 });
 
-export default function Progress({ duration }) {
+export default function Progress() {
     const classes = useStyles();
-    const {progress, setProgress} = useContext(GlobalContext)
-
-    React.useEffect(() => {
-
-        const completed = Math.round(duration / 11)
-        //console.log(duration)
-        //console.log(completed)
-        
-        const timer = setInterval(() => {
-            setProgress((prevProgress)=>(prevProgress >= 100 ? 100 : (prevProgress + (100 / completed))))
-        }, 800);
-        return () => {
-            clearInterval(timer);
-        };
-    }, []);
+    const [progressFront, setprogressFront] = useState(0)
+    const {progress} = useContext(GlobalContext)
+   
+    useEffect(() => {
+        setprogressFront(progress) 
+    }, [progress]);
 
     return (
         <div className={classes.root}>
-            <LinearProgressWithLabel value={progress} />
+            <LinearProgressWithLabel value={progressFront} />
         </div>
     );
 }

@@ -89,7 +89,7 @@ const GalleryVideos = () => {
             video.date = new Date
             const duration = parseInt(video.duration)
 
-            const socket = io(process.env.REACT_APP_URL_API_LOCAL, {
+            const socket = io(process.env.REACT_APP_URL_API, {
                 auth: { token },
                 query: { duration }
             })

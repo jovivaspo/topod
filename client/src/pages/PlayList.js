@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 const PlayList = () => {
   const clasess = useStyles()
-  const { loading, convert } = useContext(GlobalContext)
+  const { loading, working } = useContext(GlobalContext)
   const audioPlayer = useSelector(state => state.audioPlayer)
   const user = useSelector(state => state.user)
   const podcasts = audioPlayer.playlist
@@ -41,7 +41,7 @@ const PlayList = () => {
     <div className='playlist'>
       <h2 className={clasess.title}>Tu Playlist</h2>
       {loading && <LinearProgress color="secondary" style={{ width: '80vw', margin: '0 auto', marginTop: 30, marginBottom: 30 }} />}
-      {convert && <Progress/>}
+      {working && !loading && <Progress/>}
       {podcasts && <TableList podcasts={podcasts} style={{ marginBottom: 20 }} />}
       {<AlertMessage />}
     </div>

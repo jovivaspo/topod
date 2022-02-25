@@ -13,10 +13,10 @@ const GlobalProvider = ({ children }) => {
     const [loading, setLoading] = useState(false)
     const [videos, setVideos] = useState([])
     const [progress,setProgress]= useState(0)
-    const [convert, setConvert] = useState(false)
+    const [working, setWorking] = useState(false)
 
 
-    const data = { alert, setAlert, initialAlert, loading, setLoading, videos, setVideos, progress, setProgress,convert, setConvert}
+    const data = { alert, setAlert, initialAlert, loading, setLoading, videos, setVideos, progress, setProgress,working, setWorking}
 
     return (
         <GlobalContext.Provider value={data}>{children}</GlobalContext.Provider>

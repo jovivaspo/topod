@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
 
 const GalleryVideos = () => {
     const classes = useStyles()
-    const { videos, setAlert, setProgress, convert, setConvert } = useContext(GlobalContext)
+    const { videos, setAlert, setProgress, working, setWorking } = useContext(GlobalContext)
     const navigate = useNavigate()
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
@@ -67,14 +67,13 @@ const GalleryVideos = () => {
 
     const handlerConvert = async (video) => {
 
-        setConvert(true)
-
+      
         try {
             if (!user.userInfo) {
                 navigate('/login')
                 return false
             }
-            if (convert) {
+            if (working) {
                 setAlert({
                     open: true,
                     type: 'warning',
@@ -84,7 +83,7 @@ const GalleryVideos = () => {
                 return false
             }
 
-
+            setWorking(true)
 
             const { token } = user.userInfo
             video.date = new Date
@@ -105,7 +104,7 @@ const GalleryVideos = () => {
                     type: 'error',
                     message: err.message
                 })
-                setConvert(false)
+                setWorking(false)
             });
 
             socket.on("error", (err) => {
@@ -116,7 +115,7 @@ const GalleryVideos = () => {
                     type: 'error',
                     message: err
                 })
-                setConvert(false)
+                setWorking(false)
 
             });
 
@@ -144,7 +143,7 @@ const GalleryVideos = () => {
                 })
                 dispatch(loadPlaylist(user))
                 socket.disconnect()
-                setConvert(false)
+                setWorking(false)
                 setProgress(0)
 
             })
@@ -157,7 +156,7 @@ const GalleryVideos = () => {
                 type: 'error',
                 message: 'Algo salió mal'
             })
-            setConvert(false)
+            setWorking(false)
         }
     }
 

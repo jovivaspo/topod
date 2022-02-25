@@ -6,7 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Button} from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import secondsToString from '../services/secondToString';
 import { timeAgo } from '../services/ago';
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 650
   },
- 
+
   cell: {
     paddingLeft: 8,
     border: 'none',
@@ -59,14 +59,14 @@ const useStyles = makeStyles((theme) => ({
 
 const TableList = ({ podcasts }) => {
   const classes = useStyles();
-  const { setAlert, setLoading } = useContext(GlobalContext)
+  const { setAlert, setLoading, working, setWorking } = useContext(GlobalContext)
   const audioPlayer = useSelector(state => state.audioPlayer)
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
   //console.log(audioPlayer)
 
   const handlerSong = (id, title, duration) => {
-  
+
     if (id === audioPlayer?.currentSong?.id) {
       if (audioPlayer.isPlaying === true) {
         dispatch(playSong(false))
@@ -81,13 +81,22 @@ const TableList = ({ podcasts }) => {
   }
 
   const handlerDownload = (id, title) => {
+    if (working) {
+      setAlert({
+        open: true,
+        type: 'warning',
+        message: 'Espere a que termine el proceso anterior'
+      })
+      return false
+    }
+    setWorking(true)
     setLoading(true)
     setAlert({
       open: true,
       type: 'warning',
       message: 'Iniciando descarga'
     })
-  
+
     fetch(`${urls().DOWNLOAD}${id}`, {
       headers: {
         responseType: 'blob',
@@ -103,8 +112,11 @@ const TableList = ({ podcasts }) => {
         else return response.blob()
       })
       .then(data => {
-       // console.log(data)
+        // console.log(data)
         if (!data || data.type === "application/json") {
+          setWorking(false)
+          setLoading(false)
+
           let error = new Error('Ocurrió un error al descargar')
           throw error
         } else {
@@ -114,6 +126,8 @@ const TableList = ({ podcasts }) => {
             message: 'Descargando archivo'
           })
           fileDownload(data, `${title}.mp3`)
+          setLoading(false)
+          setWorking(false)
         }
       })
       .catch(error => {
@@ -122,14 +136,27 @@ const TableList = ({ podcasts }) => {
           type: 'error',
           message: error.message
         })
+        setWorking(false)
+        setLoading(false)
       })
 
-      setLoading(false)
+
   }
 
 
 
   const handlerDelete = (id, podcastId) => {
+    if (working) {
+      setAlert({
+        open: true,
+        type: 'warning',
+        message: 'Espere a que termine el proceso anterior'
+      })
+      return false
+    }
+
+    
+
     const currentSong = JSON.parse(localStorage.getItem('currentSong'))
     if (currentSong) {
       if (podcastId === currentSong.id) {
@@ -144,6 +171,7 @@ const TableList = ({ podcasts }) => {
     })
 
     setLoading(true)
+    setWorking(true)
 
     helpHttp().del(`${urls().DELETE}${id}`, {
       headers: {
@@ -158,9 +186,11 @@ const TableList = ({ podcasts }) => {
             type: 'error',
             message: res.error
           })
+          setWorking(false)
           return false
         }
         setLoading(false)
+        setWorking(false)
         dispatch(loadPlaylist(user))
         setAlert({
           open: true,
@@ -189,7 +219,7 @@ const TableList = ({ podcasts }) => {
         </TableHead>
         <TableBody>
           {podcasts.map((el, index) => (
-            
+
             <TableRow key={index} style={{
               backgroundColor:
                 audioPlayer?.currentSong?.id === el.podcastId ? "rgba(205,167,87)" : "transparent",

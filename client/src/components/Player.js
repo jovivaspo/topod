@@ -100,7 +100,7 @@ const Player = () => {
             <IconButton className={classes.close} variant='outlined'onClick={handlerClose}><CloseIcon/></IconButton>
             <div className={classes.audio} >
                 <audio ref={audio} type="audio/mpeg" style={{ width: 280 }}
-                    preload='true'
+                   
                     onPlay={() => dispatch(playSong(true))}
                     onPause={() => dispatch(playSong(false))}
                     autoPlay

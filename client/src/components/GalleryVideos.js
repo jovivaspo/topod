@@ -90,7 +90,7 @@ const GalleryVideos = () => {
             video.date = new Date
             const duration = parseInt(video.duration)
 
-            const socket = io(urls().URI_API, {
+            const socket = io(urls().URI_API, {  //urls().URI_API 'https://topodcast.herokuapp.com'
                 auth: { token },
                 query: { duration }
             })
@@ -99,6 +99,7 @@ const GalleryVideos = () => {
             navigate('/playlist')
 
             socket.on("connect_error", (err) => {
+               
                 socket.disconnect()
                 setAlert({
                     open: true,
@@ -109,7 +110,7 @@ const GalleryVideos = () => {
             });
 
             socket.on("error", (err) => {
-
+               console.log(err)
                 socket.disconnect()
                 setAlert({
                     open: true,

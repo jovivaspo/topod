@@ -43,8 +43,8 @@ const convertVideo = (video, socket) => {
             })
             .on('error', function (err) {
                 console.log('Cannot process video: ' + err.message)
-                error = new Error('Error convirtiendo el archivo')
-                socket.emit('error', 'Error convirtiendo el archivo' )
+                error = new Error(`Error conviertiendo el archivo: ${err.message}`)
+                socket.emit('error', error.message )
                 return false
             })
             .on('end', function () {

@@ -2,6 +2,7 @@ export const urls = () =>{
 
     if(process.env.REACT_APP_MOOD === 'dev'){
         return {
+            URI_API: process.env.REACT_APP_URL_API_LOCAL,
             PODCASTS_ALL : `${process.env.REACT_APP_URL_API_LOCAL}/api/podcasts/all/`,
             LOGIN : `${process.env.REACT_APP_URL_API_LOCAL}/api/user/login`,
             REGISTER : `${process.env.REACT_APP_URL_API_LOCAL}/api/user/register`,
@@ -14,6 +15,7 @@ export const urls = () =>{
         }
     }else{
         return  {
+            URI_API: process.env.REACT_APP_URL_API,
             PODCASTS_ALL : '/api/podcasts/all/',
             LOGIN : `/api/user/login`,
             REGISTER : `/api/user/register`,

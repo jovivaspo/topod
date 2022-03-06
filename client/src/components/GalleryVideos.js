@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import secondsToString from '../services/secondToString'
 import io from "socket.io-client"
 import { loadPlaylist } from '../actions/audioPlayerActions';
+import { urls } from '../services/urlApi';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -89,7 +90,7 @@ const GalleryVideos = () => {
             video.date = new Date
             const duration = parseInt(video.duration)
 
-            const socket = io(process.env.REACT_APP_URL_API, {
+            const socket = io(urls().URI_API, {
                 auth: { token },
                 query: { duration }
             })

@@ -110,12 +110,12 @@ const GalleryVideos = () => {
             });
 
             socket.on("error", (err) => {
-               console.log(err)
+               console.log(err, "aaaaa")
                 socket.disconnect()
                 setAlert({
                     open: true,
                     type: 'error',
-                    message: err
+                    message: "Error convirtiendo el vídeo"
                 })
                 setWorking(false)
 

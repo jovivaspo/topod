@@ -44,15 +44,15 @@ io.use((socket, next) => {
 
 io.use(async (socket, next) => {
     const duration = socket.handshake.query.duration
-    console.log(duration)
+   // console.log(duration)
     const { id } = socket.decoded
     const user = await Users.findById(id).populate('podcastsList')
-    console.log(user)
+   // console.log(user)
     const list = user.podcastsList
     let totalTime = parseInt(duration)
     list.forEach(el => {
         totalTime += parseInt(el.duration)
-        console.log(totalTime)
+      //  console.log(totalTime)
     })
     if (totalTime > process.env.LIMIT_TIME) {
         console.log('Espacio insuficiente', totalTime)
@@ -72,7 +72,7 @@ io.use(async (socket, next) => {
         socket.emit("message_converting", "Convirtiendo video...")
 
         socket.on("sending_infovideo", (video) => {
-            console.log(video)
+           // console.log(video)
             convertVideo(video,socket)
         })
 

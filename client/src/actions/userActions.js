@@ -9,7 +9,7 @@ export const login = (form, setAlert, setForm, initialForm) => async (dispatch) 
                 "Content-Type": "application/json"
             },
             body: {
-                email: form.email,
+                email: form.email.trim(),
                 password: form.password
             }
         })
@@ -52,7 +52,7 @@ export const register = (form, setAlert, setForm, initialForm) => async (dispatc
             },
             body: {
                 name: form.name,
-                email: form.email,
+                email: form.email.trim(),
                 password: form.password
             }
         })

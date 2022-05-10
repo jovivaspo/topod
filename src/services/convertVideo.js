@@ -7,7 +7,7 @@ const PodcastInfo = require('../models/PodcastInfo')
 const Users = require('../models/Users')
 
 const convertVideo = (video, socket) => {
-    console.log('Vamos a convertir el video')
+    //console.log('Vamos a convertir el video')
     const gridFsBucket = new mongoose.mongo.GridFSBucket(connection, {
         bucketName: 'podcasts',
     });
@@ -21,7 +21,7 @@ const convertVideo = (video, socket) => {
             .setFfmpegPath(ffmpegPath)
             .format('mp3')
             .on('codecData', function (data) {
-                console.log('Input duration: ', data.duration);
+                //console.log('Input duration: ', data.duration);
             })
             .on('stderr', function (stderrLine) {
                 //console.log('Stderr output: ' + stderrLine);
@@ -29,7 +29,7 @@ const convertVideo = (video, socket) => {
                     const index = stderrLine.search(/time=/)
                    // console.log(index)
                     const time = stderrLine.substring(index+5,index+5+8)
-                    console.log(video.duration)
+                   // console.log(video.duration)
                     const hours = parseInt(time.substring(0,2))*360
                     const minutes = parseInt(time.substring(3,5))*60
                     const seconds = parseInt(time.substring(6,8))
@@ -42,9 +42,9 @@ const convertVideo = (video, socket) => {
                
             })
             .on('error', function (err) {
-                console.log('Cannot process video: ' + err.message)
                 error = new Error(`Error conviertiendo el archivo: ${err.message}`)
                 socket.emit('error', error.message )
+                console.log('Cannot process video: ' + err.message)
                 return false
             })
             .on('end', function () {
@@ -74,13 +74,13 @@ const convertVideo = (video, socket) => {
 
                     const user = await Users.findById(socket.decoded.id)
 
-                    console.log('Usurario:', user)
+                    //console.log('Usurario:', user)
 
                     user.podcastsList = user.podcastsList.concat(podcastInfoSaved.id)
 
                     const userSaved = await user.save()
 
-                    console.log('Podcast guardado en usuario', userSaved)
+                    //console.log('Podcast guardado en usuario', userSaved)
 
                    socket.emit('finish', 'Video convertido con éxito')
 

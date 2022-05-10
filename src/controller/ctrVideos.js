@@ -16,7 +16,7 @@ ctrVideos.searchVideos = async (req, res, next) => {
     try {
         const search = req.params.search
 
-        console.log(search)
+        //console.log(search)
 
         const results = await youtube.search(search)
 
@@ -34,7 +34,7 @@ ctrVideos.convertVideo = async (req, res, next) => {
     try {
         console.log('Convirtiendo video');
         const { link, title, userId, img, duration, date } = req.body
-        console.log(link, title, userId, img, duration, date)
+       // console.log(link, title, userId, img, duration, date)
         if (!link || !title || !userId) {
             error = new Error('Error al realizar la petición')
             res.status(400)
@@ -55,7 +55,7 @@ ctrVideos.convertVideo = async (req, res, next) => {
             .setFfmpegPath(ffmpegPath)
             .format('mp3')
             .on('codecData', function (data) {
-                console.log('Input duration: ', data.duration);
+                //console.log('Input duration: ', data.duration);
             })
             .on('stderr', function (stderrLine) {
                 console.log('Stderr output: ' + stderrLine);
@@ -77,8 +77,9 @@ ctrVideos.convertVideo = async (req, res, next) => {
                 return false
             })
             .on('finish', async () => {
+                console.log("error: ",error)
                 if (!error) {
-                    console.log('Archivo subido con éxito id:', idPodcast)
+                   // console.log('Archivo subido con éxito id:', idPodcast)
                     const podcastInfo = new PodcastInfo({
                         title,
                         userId,
@@ -89,17 +90,17 @@ ctrVideos.convertVideo = async (req, res, next) => {
                     })
                     const podcastInfoSaved = await podcastInfo.save()
 
-                    console.log('Info guardada', podcastInfoSaved)
+                   // console.log('Info guardada', podcastInfoSaved)
 
                     const user = await Users.findById(userId)
 
-                    console.log('Usurario:', user)
+                   // console.log('Usurario:', user)
 
                     user.podcastsList = user.podcastsList.concat(podcastInfoSaved.id)
 
                     const userSaved = await user.save()
 
-                    console.log('Podcast guardado en usuario', userSaved)
+                    //console.log('Podcast guardado en usuario', userSaved)
 
                     return res.status(201).json({ message: 'Archivo subido con éxito' })
 

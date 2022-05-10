@@ -17,7 +17,7 @@ ctrUser.register = async (req, res, next) =>{
 
     try{
 
-        console.log(req.body)
+        //console.log(req.body)
         const {name, email, password} = req.body
 
         //console.log(name,email,password);
@@ -62,6 +62,8 @@ ctrUser.register = async (req, res, next) =>{
 ctrUser.login = async ( req, res, next ) => {
     
     const {email, password} = req.body
+
+    //console.log(req.body)
 
     const user = await Users.findOne({email})
 

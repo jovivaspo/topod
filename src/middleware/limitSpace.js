@@ -14,7 +14,7 @@ const limitSpace = async (req, res, next) => {
             totalTime += parseInt(el.duration)
         })
 
-        console.log(totalTime)
+        //console.log(totalTime)
 
         if (totalTime > process.env.LIMIT_TIME) {
             console.log('Espacio insuficiente, borre algún podcast')

@@ -21,7 +21,6 @@ function App() {
   const user = useSelector(state => state.user)
   const audioPlayer = useSelector(state => state.audioPlayer)
   const options = {
-   
     clientSecret: process.env.REACT_APP_CLIENT_SECRET_STRIPE,
   };
 

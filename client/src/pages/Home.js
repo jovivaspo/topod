@@ -13,10 +13,6 @@ const useStyles = makeStyles((theme) => ({
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         zIndex: 1,
-
-
-
-
     },
     gradient: {
         position: 'absolute',
@@ -40,8 +36,6 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         justifyContent: 'center',
         textAlign: 'center',
-
-
     },
 
 
@@ -53,9 +47,6 @@ const useStyles = makeStyles((theme) => ({
             fontSize: 90
 
         }
-
-
-
     },
 
     subtitle: {

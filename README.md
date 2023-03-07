@@ -7,8 +7,6 @@ Back-end: Node.js and mongoDB.
 
 Front-end: React.js and Material UI.
 
-You can visit the web here: https://topodcast.herokuapp.com/
-
 Code of the native mobile application here: https://github.com/jovivaspo/topod-react-native, You won't find it in the play store, but it is ready to go into production.
 
 ![image](https://user-images.githubusercontent.com/87134926/166683915-0393c1e2-faff-44cd-8f6d-127bb70595d1.png)

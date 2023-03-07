@@ -29,8 +29,8 @@ export const login =
         message: res.message,
       });
 
-      const { uid, token, email } = res;
-      const userInfo = { uid, token, email };
+      const { uid, token, email, name } = res;
+      const userInfo = { uid, token, email, name };
       dispatch({ type: LOGIN, payload: userInfo });
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
       setForm(initialForm);
@@ -71,8 +71,8 @@ export const register =
         type: "success",
         message: res.message,
       });
-      const { uid, token, email } = res;
-      const userInfo = { uid, token, email };
+      const { uid, token, email, name } = res;
+      const userInfo = { uid, token, email, name };
       dispatch({ type: REGISTER, payload: userInfo });
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
       setForm(initialForm);

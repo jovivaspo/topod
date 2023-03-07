@@ -37,7 +37,7 @@ const PlayList = () => {
 
   return (
     <div className="playlist">
-      <h2 className={clasess.title}>Tu Playlist</h2>
+      <h2 className={clasess.title}>Tu Playlist {user.userInfo.name}</h2>
       {loading && (
         <LinearProgress
           color="secondary"

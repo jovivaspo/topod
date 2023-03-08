@@ -1,7 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import TableList from "../components/TableList";
-import { useNavigate } from "react-router-dom";
 import { loadPlaylist } from "../actions/audioPlayerActions";
 import { GlobalContext } from "../context/GlobalContext";
 import { LinearProgress, makeStyles } from "@material-ui/core";
@@ -24,14 +23,10 @@ const PlayList = () => {
   const user = useSelector((state) => state.user);
   const podcasts = audioPlayer.playlist;
 
-  const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!user.userInfo) {
-      navigate("/login");
-      return false;
-    }
     dispatch(loadPlaylist(user));
   }, []);
 

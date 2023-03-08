@@ -77,10 +77,8 @@ const FormLogin = ({ value, setValue }) => {
         return false;
       }
 
-      dispatch(login(form, setAlert, setForm, initialForm));
-      setTimeout(() => {
-        navigate("/playlist");
-      }, 1000);
+      dispatch(login(form, setAlert, setForm, initialForm, navigate));
+      
     } else {
       if (form.password !== form.confirmPassword) {
         setAlert({
@@ -99,10 +97,8 @@ const FormLogin = ({ value, setValue }) => {
         return false;
       }
 
-      dispatch(register(form, setAlert, setForm, initialForm));
-      setTimeout(() => {
-        navigate("/playlist");
-      }, 1000);
+      dispatch(register(form, setAlert, setForm, initialForm, navigate));
+      
     }
   };
 

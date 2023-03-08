@@ -38,6 +38,7 @@ const MenuDesktop = () => {
                     {user.userInfo && <Link style={{ textDecoration: 'none', marginRight: 16, fontWeight: 'bold' }} to='/buscar'>Buscar</Link>}
                     {user.userInfo && <Link style={{ textDecoration: 'none', marginRight: 16, fontWeight: 'bold' }} to='/playlist'>Playlist</Link>}
                     {user.userInfo && <Link style={{ textDecoration: 'none', marginRight: 16, fontWeight: 'bold' }} to='/donaciones'>Donaciones</Link>}
+                    {user.userInfo && <Link style={{ textDecoration: 'none', marginRight: 16, fontWeight: 'bold' }} to='/perfil'>Perfil</Link>}
                     {user.userInfo && <LogOut />}
                 </div>
             </Toolbar>

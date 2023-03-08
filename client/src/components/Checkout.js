@@ -74,14 +74,6 @@ const Checkout = () => {
     const [sending, setSending] = useState(false)
     const navigate = useNavigate()
 
-    
-  useEffect(() => {
-    if (!user.userInfo) {
-      navigate('/login')
-      return false
-    }
-    
-  }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault()

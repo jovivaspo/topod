@@ -15,6 +15,7 @@ import Seacher from "./pages/Seacher";
 import NotFound from "./pages/NotFound";
 import TermsConditions from "./pages/TermsConditions";
 import Privacy from "./pages/Privacy";
+import Profile from "./pages/Profile";
 
 const stripePromise = loadStripe(
   "pk_live_51KSjXRKB2XXJmSdXfIfj4CqsaC1uydEgtRS7u9NvV02Pe1kVxlDd3YJgI86b8TgNe30GpjVDD8eyq2Li5NwOqmBi00rwyZw1ML"
@@ -36,8 +37,16 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/buscar" element={<Seacher />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/playlist" element={<PlayList />} />
             <Route
+              path="/terminos-y-condiciones"
+              element={<TermsConditions />}
+            />
+            <Route path="/politica-privacidad" element={<Privacy />} />
+            {
+              user.userInfo && <>
+               <Route path="/playlist" element={<PlayList />} />
+               <Route path="/perfil" element={<Profile/>}/>
+               <Route
               path="/donaciones"
               element={
                 <Elements stripe={stripePromise}>
@@ -45,11 +54,9 @@ function App() {
                 </Elements>
               }
             />
-            <Route
-              path="/terminos-y-condiciones"
-              element={<TermsConditions />}
-            />
-            <Route path="/politica-privacidad" element={<Privacy />} />
+              </>
+            }
+          
             <Route path="*" element={<NotFound />} />
           </Routes>
           {user.userInfo &&

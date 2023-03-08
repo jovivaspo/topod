@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import SearchIcon from '@material-ui/icons/Search';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PaymentIcon from '@material-ui/icons/Payment';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -112,10 +113,17 @@ const MenuMovil = () => {
                             <PaymentIcon /><span>Donaciones</span>
                         </Link></ListItem>
 
-                    {user.userInfo &&
-                     <ListItem className={classes.menuItem} onClick={handlerOpen}>
+                    {user.userInfo && <>
+                        <ListItem className={classes.menuItem} onClick={handlerOpen}>
+                        <Link className={classes.link} to='/perfil'>
+                            <AccountCircleIcon /><span>Perfil</span>
+                        </Link></ListItem>
+                       
+                        <ListItem className={classes.menuItem} onClick={handlerOpen}>
                          <ExitToAppIcon/><span style={{marginLeft:10}}><LogOut/></span>
                         </ListItem>
+                    </>
+                  
 }
 
                 </List>

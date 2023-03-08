@@ -3,7 +3,7 @@ import { helpHttp } from "../services/helpHttp";
 import { urls } from "../services/urlApi";
 
 export const login =
-  (form, setAlert, setForm, initialForm) => async (dispatch) => {
+  (form, setAlert, setForm, initialForm, navigate) => async (dispatch) => {
     try {
       const res = await helpHttp().post(`${urls().LOGIN}`, {
         headers: {
@@ -29,11 +29,15 @@ export const login =
         message: res.message,
       });
 
+      setTimeout(() => {
       const { uid, token, email, name } = res;
       const userInfo = { uid, token, email, name };
       dispatch({ type: LOGIN, payload: userInfo });
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
       setForm(initialForm);
+        navigate("/playlist");
+      }, 1000);
+
     } catch (err) {
       setAlert({
         open: true,
@@ -44,7 +48,7 @@ export const login =
   };
 
 export const register =
-  (form, setAlert, setForm, initialForm) => async (dispatch) => {
+  (form, setAlert, setForm, initialForm, navigate) => async (dispatch) => {
     try {
       const res = await helpHttp().post(`${urls().REGISTER}`, {
         headers: {
@@ -71,11 +75,16 @@ export const register =
         type: "success",
         message: res.message,
       });
+      
+      setTimeout(() => {
       const { uid, token, email, name } = res;
       const userInfo = { uid, token, email, name };
-      dispatch({ type: REGISTER, payload: userInfo });
+      dispatch({ type: LOGIN, payload: userInfo });
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
       setForm(initialForm);
+        navigate("/playlist");
+      }, 1000);
+     
     } catch (err) {
       setAlert({
         open: true,

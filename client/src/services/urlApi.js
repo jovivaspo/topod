@@ -4,6 +4,7 @@ export const urls = () => {
       PODCASTS_ALL: `${process.env.REACT_APP_URL_API_LOCAL}/api/podcasts/all/`,
       LOGIN: `${process.env.REACT_APP_URL_API_LOCAL}/api/auth/login`,
       REGISTER: `${process.env.REACT_APP_URL_API_LOCAL}/api/auth/register`,
+      UPDATE: `${process.env.REACT_APP_URL_API_LOCAL}/api/user/`,
       SEARCH_VIDEOS: `${process.env.REACT_APP_URL_API_LOCAL}/api/video/search/`,
       DONACIONES: `${process.env.REACT_APP_URL_API_LOCAL}/donaciones`,
       DOWNLOAD: `${process.env.REACT_APP_URL_API_LOCAL}/api/podcasts/download/`,

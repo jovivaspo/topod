@@ -30,14 +30,13 @@ export const login =
       });
 
       setTimeout(() => {
-      const { uid, token, email, name } = res;
-      const userInfo = { uid, token, email, name };
-      dispatch({ type: LOGIN, payload: userInfo });
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
-      setForm(initialForm);
+        const { uid, token, email, name } = res;
+        const userInfo = { uid, token, email, name };
+        dispatch({ type: LOGIN, payload: userInfo });
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+        setForm(initialForm);
         navigate("/playlist");
       }, 1000);
-
     } catch (err) {
       setAlert({
         open: true,
@@ -75,16 +74,15 @@ export const register =
         type: "success",
         message: res.message,
       });
-      
+
       setTimeout(() => {
-      const { uid, token, email, name } = res;
-      const userInfo = { uid, token, email, name };
-      dispatch({ type: LOGIN, payload: userInfo });
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
-      setForm(initialForm);
+        const { uid, token, email, name } = res;
+        const userInfo = { uid, token, email, name };
+        dispatch({ type: LOGIN, payload: userInfo });
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+        setForm(initialForm);
         navigate("/playlist");
       }, 1000);
-     
     } catch (err) {
       setAlert({
         open: true,
@@ -99,3 +97,48 @@ export const logout = () => async (dispatch) => {
   dispatch({ type: LOGOUT });
   localStorage.removeItem("userInfo");
 };
+
+export const updateUser =
+  (body, setAlert, setForm, user) => async (dispatch) => {
+    try {
+      const res = await helpHttp().put(`${urls().UPDATE}${user.userInfo.uid}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.userInfo.token}`,
+        },
+        body: body,
+      });
+
+      if (res.error) {
+        setAlert({
+          open: true,
+          type: "error",
+          message: res.error,
+        });
+        return false;
+      }
+
+      setAlert({
+        open: true,
+        type: "success",
+        message: res.message,
+      });
+
+      const { uid, email, name } = res.userUpdated;
+
+      const userInfo = { uid, email, name, token: user.userInfo.token };
+
+      dispatch({ type: LOGIN, payload: userInfo });
+
+      localStorage.setItem("userInfo", JSON.stringify(userInfo));
+
+      setForm({ name, email, password: "", confirmPassword: "" });
+      localStorage.setItem("userInfo", JSON.stringify(userInfo));
+    } catch (error) {
+      return setAlert({
+        open: true,
+        type: "error",
+        message: "Algo salió mal",
+      });
+    }
+  };
